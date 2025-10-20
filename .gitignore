@@ -1,0 +1,23 @@
+# Node modules
+node_modules/
+
+# Build hasil (kalau pakai build tools)
+dist/
+build/
+
+# File log
+*.log
+
+# File environment (yang berisi API key atau password)
+.env
+.env.local
+
+# File khusus sistem / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# File sementara
+*.bak
+*.tmp
