@@ -8,50 +8,35 @@
   <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Custom Tailwind Config -->
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#E63946', // warna merah tombol
-            dark: '#0F0F0F',
-          },
-          fontFamily: {
-            poppins: ['Poppins', 'sans-serif'],
-          },
-        },
-      },
-    };
-  </script>
-
-  <!-- font Poppins -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  <!-- font manrope untuk -->
-   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <!-- Font Google (Manrope) -->
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&display=swap" rel="stylesheet">
 </head>
 
-<body class="bg-dark text-white font-poppins h-screen flex flex-col relative">
+<body class="bg-black text-white h-screen flex flex-col relative font-[Manrope]">
 
   <!-- Background -->
-  <div class="absolute inset- 0">
-    <img src="../assets/images/bg.png" alt="background" class="w-full h-full object-cover opacity-70" />
+  <div class="absolute inset-0">
+    <img src="../assets/images/bg-full.png" 
+         alt="background" 
+         class="w-full h-full object-cover opacity-70" />
   </div>
+  <!-- END Background -->
 
   <!-- Logo -->
-  <div class="relative z-10 flex  justify-center mt-24">
-    <img src="../assets/images/logo.png" alt="logo" class="w-[250px] opacity-32 mt-20 drop-shadow-lg"/>
+  <div class="relative z-10 mt-24 flex justify-center">
+    <img src="../assets/images/logo.png" 
+         alt="logo" 
+         class="w-[250px] opacity-90 mt-20  drop-shadow-lg" />
   </div>
 
-  <!-- Spacer untuk dorong tombol ke bawah -->
+  <!-- Spacer -->
   <div class="flex-grow"></div>
   
   <!-- Button -->
   <div class="relative z-10 flex justify-center mb-10">
     <a href="login.html"
-       class="bg-primary text-white px-8 py-5 rounded-xl font-semibold hover:bg-red-700 transition">
+       class="px-8 py-5 rounded-xl font-semibold text-white transition"
+       style="background-color: #CC361E;">
       Start Searching
     </a>
   </div>
