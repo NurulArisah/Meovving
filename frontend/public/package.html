@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Choose Package</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: 'Poppins', 'Manrope', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-black text-white flex flex-col items-center justify-start min-h-screen px-6 py-10">
+
+  <!-- Header -->
+  <div class="w-full  flex justify-between items-right mb-6">
+    <a href="signup.html" class=" absolute top-9 right-5 text-[14px] text-gray-400 hover:text-white">Cancel</a>
+  </div>
+
+  <!-- Title -->
+  <h2 class="text-xl text-left font-regular mt-9 mb-8">
+    Choose The Right Package For You
+  </h2>
+
+  <!-- Packages -->
+  <div class="flex flex-col gap-5 w-full max-w-sm">
+
+    <!-- Family -->
+    <a href="payment.html?plan=family"
+       class="block border border-[#CC361E] rounded-2xl p-5 hover:bg-[#CC361E]/10 transition-all duration-300 hover:scale-[1.02]">
+      <h3 class="text-[22px] font-bold mb-2">Family</h3>
+      <ul class="text-[18px] text-gray-300 list-disc list-inside mb-4">
+        <li>Up to 3 premium account</li>
+      </ul>
+      <p class="text-right text-base font-regular">Rp. 49.900,00</p>
+    </a>
+
+    <!-- Duo -->
+    <a href="payment.html?plan=duo"
+       class="block border border-[#CC361E] rounded-2xl p-5 hover:bg-[#CC361E]/10 transition-all duration-300 hover:scale-[1.02]">
+      <h3 class="text-[22px] font-bold mb-2">Duo</h3>
+      <ul class="text-[18px] text-gray-300 list-disc list-inside mb-4">
+        <li>2 premium account</li>
+      </ul>
+      <p class="text-right text-base font-regular">Rp. 29.900,00</p>
+    </a>
+
+    <!-- Individu -->
+    <a href="payment.html?plan=individu"
+       class="block border border-[#CC361E] rounded-2xl p-5 hover:bg-[#CC361E]/10 transition-all duration-300 hover:scale-[1.02]">
+      <h3 class="text-[22px] font-bold mb-2">Individu</h3>
+      <ul class="text-[18px] text-gray-300 list-disc list-inside mb-4">
+        <li>1 premium account</li>
+      </ul>
+      <p class="text-right text-base font-regular">Rp. 19.900,00</p>
+    </a>
+
+  </div>
+
+</body>
+</html>
