@@ -3,8 +3,8 @@ A data-driven movie web app
 
 ## 🧠 Tech Stack
 - Frontend: HTML, CSS, JS, Tailwind
-- Backend: Golang
-- Database: MySQL
+- Backend: Golang, Gin
+- Database: Supabase
 - API: TMDB (The Movie Database)
 
 ## 🔥 Features
