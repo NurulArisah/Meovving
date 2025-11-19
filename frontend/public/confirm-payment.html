@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Confirm Payment</title>
+
+  
+ 
+  <!-- font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-black text-white min-h-screen flex flex-col items-center px-6 py-8 font-[Poppins]">
+
+  <!-- Header -->
+  <div class="w-full flex justify-between items-center mb-8">
+    <h1 class="text-lg font-semibold">Confirm Payment</h1>
+    <a href="payment-method.html" class="text-sm text-gray-400 hover:text-white">Cancel</a>
+  </div>
+
+  <!-- Package Info -->
+  <div class="w-full max-w-sm border border-[#CC361E] rounded-2xl p-5 mb-8">
+    <h2 id="planName" class="text-lg font-semibold mb-2">Family</h2>
+    <p id="planPrice" class="text-right text-base font-medium">Rp. 49.900,00</p>
+  </div>
+
+
+
+
+  <!-- Selected Payment -->
+  <div class="w-full max-w-sm bg-[#1C1C1C] rounded-2xl p-4 mb-8">
+    <h3 class="text-sm font-medium text-gray-300 mb-3">Payment Method</h3>
+    <div class="flex items-center py-2 px-2 bg-[#2C2C2C] rounded-xl">
+      <img src="../assets/icons/dana.svg" alt="DANA" class="w-6 h-6 mr-3">
+      <span class="text-[#00AEEF] font-semibold">DANA</span>
+    </div>
+  </div>
+
+  <!-- Note -->
+  <p class="text-center text-sm text-gray-300 mb-8 max-w-xs">
+    Complete your payment and get full access to today's best movie trend analysis!
+  </p>
+
+  <!-- Pay Button -->
+  <button class="bg-[#CC361E] hover:bg-red-700 w-full max-w-sm py-3 rounded-[16px] font-semibold transition">
+    Pay
+  </button>
+
+  <!-- js + tailwind-->
+  <script src="../javascript/confirm-payment.js"></script>
+   <script src="https://cdn.tailwindcss.com"></script>
+
+</body>
+</html>

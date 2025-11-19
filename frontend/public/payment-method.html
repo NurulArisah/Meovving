@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Method</title>
+
+  <!-- font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+  
+<body class="bg-black text-white min-h-screen flex flex-col items-center px-6 py-8 font-[Poppins]">
+
+  <!-- Header -->
+  <div class="w-full flex justify-between items-center mb-8">
+    <h1 class="text-lg font-semibold">Payment</h1>
+    <a href="package.html" class="text-sm text-gray-400 hover:text-white">Cancel</a>
+  </div>
+
+  <!-- Package Info -->
+  <div class="w-full max-w-sm border border-[#CC361E] rounded-2xl p-5 mb-8">
+    <h2 id="planName" class="text-lg font-semibold mb-2">Family</h2>
+    <p id="planPrice" class="text-right text-base font-medium">Rp. 49.900,00</p>
+  </div>
+
+  <hr class="border-gray-700 w-full max-w-sm mb-6" />
+
+  <!-- Payment Methods -->
+  <div class="w-full max-w-sm bg-[#1C1C1C] rounded-2xl p-4">
+    <h3 class="text-sm font-medium text-gray-300 mb-3">Payment Method</h3>
+
+  <!-- DANA -->
+  <button onclick="selectPayment('DANA')" class="flex items-center w-full py-3 border-b border-gray-700 hover:bg-[#2C2C2C] transition rounded-md">
+    <img src="../assets/icons/dana.svg" alt="DANA" class="w-6 h-6 mr-3">
+    <span class="text-[#00AEEF] font-semibold">DANA</span>
+  </button>
+
+  <!-- GoPay -->
+  <button onclick="selectPayment('GoPay')" class="flex items-center w-full py-3 border-b border-gray-700 hover:bg-[#2C2C2C] transition">
+    <img src="../assets/icons/gopay.svg" alt="GoPay" class="w-6 h-6 mr-3">
+    <span class="text-[#00B4A8] font-semibold">GoPay</span>
+  </button>
+
+  <!-- OVO -->
+  <button onclick="selectPayment('OVO')" class="flex items-center w-full py-3 border-b border-gray-700 hover:bg-[#2C2C2C] transition">
+    <img src="../assets/icons/ovo.svg" alt="OVO" class="w-6 h-6 mr-3">
+    <span class="text-[#8F5DE8] font-semibold">OVO</span>
+  </button>
+
+  <!-- ShopeePay -->
+  <button onclick="selectPayment('ShopeePay')" class="flex items-center w-full py-3 hover:bg-[#2C2C2C] transition">
+    <img src="../assets/icons/shopeepay.svg" alt="ShopeePay" class="w-6 h-6 mr-3">
+    <span class="text-[#EE4D2D] font-semibold">ShopeePay</span>
+  </button>
+
+  </div>
+
+
+  <!-- Tailwind + js -->
+  <script src="../javascript/payment-method.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</body>
+</html>

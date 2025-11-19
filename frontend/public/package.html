@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Choose Package</title>
 
-  <!-- Tailwind CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -22,7 +21,7 @@
 
   <!-- Header -->
   <div class="w-full  flex justify-between items-right mb-6">
-    <a href="signup.html" class=" absolute top-9 right-5 text-[14px] text-gray-400 hover:text-white">Cancel</a>
+    <a href="../public/login.html" class=" absolute top-9 right-5 text-[14px] text-gray-400 hover:text-white">Cancel</a> <!-- kembali ke page login-->
   </div>
 
   <!-- Title -->
@@ -34,7 +33,9 @@
   <div class="flex flex-col gap-5 w-full max-w-sm">
 
     <!-- Family -->
-    <a href="payment.html?plan=family"
+    <a href="payment-method.html?plan=family"
+       data-plan="Family"
+       data-price="Rp. 49.900,00"
        class="block border border-[#CC361E] rounded-2xl p-5 hover:bg-[#CC361E]/10 transition-all duration-300 hover:scale-[1.02]">
       <h3 class="text-[22px] font-bold mb-2">Family</h3>
       <ul class="text-[18px] text-gray-300 list-disc list-inside mb-4">
@@ -44,7 +45,9 @@
     </a>
 
     <!-- Duo -->
-    <a href="payment.html?plan=duo"
+    <a href="payment-method.html?plan=duo"
+       data-plan="Duo"
+       data-price="Rp. 29.900,00"
        class="block border border-[#CC361E] rounded-2xl p-5 hover:bg-[#CC361E]/10 transition-all duration-300 hover:scale-[1.02]">
       <h3 class="text-[22px] font-bold mb-2">Duo</h3>
       <ul class="text-[18px] text-gray-300 list-disc list-inside mb-4">
@@ -54,7 +57,9 @@
     </a>
 
     <!-- Individu -->
-    <a href="payment.html?plan=individu"
+    <a href="payment-method.html?plan=individu"
+       data-plan="Individu"
+      data-price="Rp. 19.900,00"
        class="block border border-[#CC361E] rounded-2xl p-5 hover:bg-[#CC361E]/10 transition-all duration-300 hover:scale-[1.02]">
       <h3 class="text-[22px] font-bold mb-2">Individu</h3>
       <ul class="text-[18px] text-gray-300 list-disc list-inside mb-4">
@@ -65,5 +70,10 @@
 
   </div>
 
+  <!-- JS -->
+  <script src="../javascript/package.js"></script> 
+  
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
 </body>
 </html>
