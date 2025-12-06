@@ -15,7 +15,7 @@
     .font-anton {
       font-family: 'Anton SC', sans-serif;
     }
-    /* Animasi untuk buttonnya */
+    /* animasi untuk buttonnya */
     .genre-btn {
       transition: all 0.2s ease-in-out;
     }
@@ -26,9 +26,9 @@
 
   <div class="w-full max-w-xs px-4 pb-10">
     
-    <h1 class="text-4xl font-anton text-[#CC361E] mb-4 text-left">MEOWING</h1>
+    <h1 class="text-3xl font-anton text-[#CC361E] mb-8 text-left">MEOWING</h1>
 
-    <p class="text-white text-lg mb-8 leading-snug">
+    <p class="text-white text-xl mb-8 leading-snug">
       Find movie trend that match your taste!
     </p>
 
@@ -63,37 +63,14 @@
     <button
       type="button"
       onclick="submitSelection()"
-      class="bg-[#CC361E] hover:bg-red-700 text-white font-semibold py-3 w-full rounded-[16px] transition shadow-lg mt-10">
+      class="bg-[#CC361E] hover:bg-red-700 text-white font-semibold py-3 w-full rounded-[16px] transition shadow-lg mt-20">
       Next
     </button>
 
   </div>
 
   <script src="../javascript/search-filter.js"></script>
-  <!-- <script>
-    // Fungsi untuk memberikan efek seleksi pada tombol genre
-    function toggleGenre(button) {
-      // Toggle warna background/border saat dipilih
-      // Kita cek apakah tombol sudah punya class 'ring-2' (tanda dipilih)
-      if (button.classList.contains('ring-2')) {
-        // Jika sudah dipilih, kembalikan ke semula (Unselect)
-        button.classList.remove('ring-2', 'ring-[#CC361E]', 'bg-[#3A3A3A]');
-        button.classList.add('bg-[#4C4F54]');
-      } else {
-        // Jika belum dipilih, beri highlight Merah (Select)
-        button.classList.remove('bg-[#4C4F54]');
-        button.classList.add('ring-2', 'ring-[#CC361E]', 'bg-[#3A3A3A]');
-      }
-    }
 
-    // Fungsi dummy untuk tombol Next
-    function submitSelection() {
-      // Di sini nanti teman backendmu bisa mengambil data genre yang dipilih
-      // Contoh: redirect ke halaman home
-      // window.location.href = 'home.html'; 
-      alert("Next button clicked! Ready for Backend Logic.");
-    }
-  </script> -->
 
 </body>
 </html>

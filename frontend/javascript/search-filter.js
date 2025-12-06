@@ -34,7 +34,7 @@ function submitSelection() {
   // Debugging: lihat apa yang dipilih di console
   console.log("Genre terpilih:", selectedGenres);
   
-  // Arahkan ke halaman selanjutnya (misalnya home atau dashboard)
+  // Arahkan ke halaman selanjutnya
   // Sesuaikan nama file tujuanmu di sini:
   window.location.href = 'dashboard.html'; 
 }
