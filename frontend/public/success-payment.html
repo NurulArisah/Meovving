@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Success</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+  </style>
+</head>
+
+<body class="bg-black text-white min-h-screen flex flex-col items-center justify-center px-6">
+
+  <!-- Judul -->
+  <h1 class="text-3xl font-semibold text-center mb-6">
+    Payment Success!
+  </h1>
+
+  <!-- Icon -->
+  <img src="/frontend/assets/icons/success.svg" 
+       alt="success icon" 
+       class="w-40 h-40 mx-auto mb-6" />
+
+  <!-- Subtext -->
+  <p class="text-center text-sm text-gray-300 leading-relaxed mb-10 px-4">
+    Congratulations! Your access to the world of movie trend analysis has been activated.
+  </p>
+
+  <!-- Button Next -->
+  <button
+    onclick="window.location.href='home.html'"
+    class="w-full max-w-xs bg-[#CC361E] text-white py-3 rounded-xl text-lg font-medium hover:opacity-90 transition">
+    Next
+  </button>
+
+</body>
+</html>
