@@ -1,8 +1,9 @@
+// Lokasi: frontend/javascript/dashboard.js
+
 const isKids = localStorage.getItem('isKidsMode') === 'true';
 
 if (isKids) {
    console.log("Mode Anak Aktif: Filter film 18+");
-   // Sembunyikan film horror / thriller
 } else {
    console.log("Mode Dewasa: Tampilkan semua");
 }
@@ -72,13 +73,13 @@ const KIDS_CONTENT = {
   ],
   anime: [
     { title: "Pokemon", rating: 8.0, image: "https://image.tmdb.org/t/p/w500/rS5l5i30Nl3rZ195yUj8YhX6d.jpg" },
-    { title: "Doraemon", rating: 8.2, image: "https://image.tmdb.org/t/p/w500/3k7g0iW1H5g1.jpg" }, // Placeholder
-    { title: "Digimon", rating: 7.9, image: "https://image.tmdb.org/t/p/w500/wlQ3d2W3h7.jpg" }, // Placeholder
-    { title: "Dragon Ball", rating: 8.5, image: "https://image.tmdb.org/t/p/w500/tZ0j3.jpg" }, // Placeholder
-    { title: "Beyblade", rating: 7.0, image: "https://image.tmdb.org/t/p/w500/kZ0.jpg" } // Placeholder
+    { title: "Doraemon", rating: 8.2, image: "https://image.tmdb.org/t/p/w500/3k7g0iW1H5g1.jpg" }, 
+    { title: "Digimon", rating: 7.9, image: "https://image.tmdb.org/t/p/w500/wlQ3d2W3h7.jpg" }, 
+    { title: "Dragon Ball", rating: 8.5, image: "https://image.tmdb.org/t/p/w500/tZ0j3.jpg" }, 
+    { title: "Beyblade", rating: 7.0, image: "https://image.tmdb.org/t/p/w500/kZ0.jpg" } 
   ],
   drakor: [
-    { title: "Pororo", rating: 8.5, image: "https://image.tmdb.org/t/p/w500/k0.jpg" }, // Placeholder Kids Korean
+    { title: "Pororo", rating: 8.5, image: "https://image.tmdb.org/t/p/w500/k0.jpg" }, 
     { title: "Tayo the Little Bus", rating: 8.2, image: "https://image.tmdb.org/t/p/w500/k1.jpg" },
     { title: "Robocar Poli", rating: 7.9, image: "https://image.tmdb.org/t/p/w500/k2.jpg" },
     { title: "Larva", rating: 8.0, image: "https://image.tmdb.org/t/p/w500/k3.jpg" },
@@ -238,18 +239,76 @@ function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('translate-x-full');
 }
 
+// --- MODAL LOGIC (DIPERBARUI) ---
 const modal = document.getElementById('movieModal');
 const modalTitle = document.getElementById('modalTitle');
 const modalRating = document.getElementById('modalRating');
 const modalImage = document.getElementById('modalImage');
 
+// Variabel untuk menyimpan data film yang sedang dibuka di modal
+let currentModalMovie = {};
+
 function openModal(title, rating, imageUrl) {
+    // 1. Update UI Modal
     modalTitle.innerText = title;
     modalRating.innerText = rating;
     modalImage.src = imageUrl;
+
+    // 2. Simpan Data Film Sementara
+    currentModalMovie = {
+        id: title, // Sederhana: gunakan judul sebagai ID
+        title: title,
+        rating: rating,
+        image: imageUrl
+    };
+
+    // 3. Update Status Tombol Watchlist (Cek apakah sudah ada di profile)
+    updateWatchlistButtonState();
+
+    // 4. Tampilkan Modal
     modal.classList.remove('hidden');
     modal.classList.add('flex');
     setTimeout(() => { modal.classList.remove('opacity-0'); }, 10);
+}
+
+function updateWatchlistButtonState() {
+    const watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+    const exists = watchlist.some(m => m.title === currentModalMovie.title);
+    
+    const btnText = document.getElementById('modalWatchlistText');
+    const btnIcon = document.getElementById('modalWatchlistIcon');
+
+    if (exists) {
+        btnText.innerText = "Added";
+        btnIcon.className = "fas fa-check"; // Ubah ikon jadi centang
+    } else {
+        btnText.innerText = "Watchlist";
+        btnIcon.className = "fas fa-plus"; // Kembali ke ikon plus
+    }
+}
+
+function handleModalWatchlist() {
+    let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+    const index = watchlist.findIndex(m => m.title === currentModalMovie.title);
+
+    if (index === -1) {
+        // Belum ada -> Tambahkan
+        watchlist.push(currentModalMovie);
+        localStorage.setItem('watchlist', JSON.stringify(watchlist));
+        alert(`${currentModalMovie.title} added to your watchlist!`);
+    } else {
+        // Sudah ada -> Hapus (Opsional, atau biarkan alert saja)
+        // watchlist.splice(index, 1);
+        // localStorage.setItem('watchlist', JSON.stringify(watchlist));
+        alert(`${currentModalMovie.title} is already in your watchlist.`);
+    }
+    
+    updateWatchlistButtonState();
+}
+
+function handleModalDetails() {
+    // Arahkan ke halaman detail
+    window.location.href = 'movie-detail.html';
 }
 
 function closeModal(e) { if (e.target === modal) closeModalDirect(); }
@@ -264,7 +323,7 @@ function renderDashboard(data, isKids) {
   const container = document.getElementById('mainContent');
   container.innerHTML = ''; 
 
-  // 1. TRENDING 10 (Angka Besar)
+  // 1. TRENDING 10
   const trendingSection = `
     <div class="flex flex-col gap-4 animate-fade-in">
       <h2 class="text-white text-lg font-semibold px-6 border-l-4 border-brand ml-6">Popular Movie</h2>
@@ -325,27 +384,20 @@ function createSectionHTML(title, movies) {
   `;
 }
 
-// Navbar
+// Navbar logic
 function goToProfile() {
-    // Arahkan ke halaman profile.html
     window.location.href = 'profile.html';
 }
 
+// ke Account
 function goToAccount() {
-    // Arahkan ke halaman account.html
     window.location.href = 'account.html';
 }
 
 function handleLogout() {
-    // 1. Konfirmasi logout (opsional)
     if (confirm("Are you sure you want to log out?")) {
-        // 2. Hapus data sesi di LocalStorage
         localStorage.removeItem('activeProfile');
         localStorage.removeItem('isKidsMode');
-        // localStorage.removeItem('activeUser'); // Opsional: Hapus jika ingin user login ulang email
-        // localStorage.removeItem('selectedPlanName'); // Opsional
-
-        // 3. Arahkan kembali ke halaman Login
         window.location.href = 'login.html';
     }
 }
