@@ -1,69 +1,76 @@
 // Lokasi: frontend/javascript/dashboard.js
 
-// --- 1. DATA DUMMY (Ganti URL image dengan file aset lokalmu nanti) ---
-
+// --- 1. DATA DUMMY (ADULT CONTENT - TOP 10 TRENDING) ---
 const ADULT_CONTENT = {
   trending: [
-    { title: "Money Heist", image: "https://image.tmdb.org/t/p/w200/reEMJA1uzscCbkpeRJeTT2bjqUp.jpg" },
-    { title: "Stranger Things", image: "https://image.tmdb.org/t/p/w200/49WJfeN0moxb9IPfGn8AIqMGskD.jpg" },
-    { title: "1899", image: "https://image.tmdb.org/t/p/w200/gZleGu1tv7y9FCmjlD7Ipwzn2uv.jpg" },
-    { title: "Dark", image: "https://image.tmdb.org/t/p/w200/apbrbWs8M9lyOpJAXam93KUbWU.jpg" },
+    { title: "Stranger Things", image: "https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg" },
+    { title: "Wednesday", image: "https://image.tmdb.org/t/p/w500/9PFonBhy4cQy7Jz20NpMygczOkv.jpg" },
+    { title: "The Last of Us", image: "https://image.tmdb.org/t/p/w500/uKvVjHNqB5VmOrdxqAt2F7J78ED.jpg" },
+    { title: "Squid Game", image: "https://image.tmdb.org/t/p/w500/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg" },
+    { title: "Money Heist", image: "https://image.tmdb.org/t/p/w500/reEMJA1uzscCbkpeRJeTT2bjqUp.jpg" },
+    { title: "Trolls 2", image: "https://image.tmdb.org/t/p/w500/1rOY8NCGEpOGVQ2EzMJb6B7Ni6X.jpg" },
+    { title: "Breaking Bad", image: "https://image.tmdb.org/t/p/w500/ggFHVNu6YYI5L9pCfOacjizRGt.jpg" },
+    { title: "Game of Thrones", image: "https://image.tmdb.org/t/p/w500/1XS1oqL89opfnbLl8WnZY1O1uJx.jpg" },
+    { title: "The Witcher", image: "https://image.tmdb.org/t/p/w500/cRLz8VjRHyqUaV0F0YvJ4Jjq4tD.jpg" },
+    { title: "Loki", image: "https://image.tmdb.org/t/p/w500/voHUmluYmKyleFk7mnVRwnINLOC.jpg" },
   ],
   topRating: [
-    { title: "Captain Marvel", rating: 9.9, image: "https://image.tmdb.org/t/p/w200/AtsgWhDnVBXzFqspCel1llPM5ii.jpg" },
-    { title: "Harry Potter", rating: 9.9, image: "https://image.tmdb.org/t/p/w200/wuMc08IPKEatf9rnMNXvIDxqP4W.jpg" },
-    { title: "Captain America", rating: 9.8, image: "https://image.tmdb.org/t/p/w200/vSNxAJTlD0r02V9sPYpOjqDZXUK.jpg" },
+    { title: "The Shawshank Redemption", rating: 9.3, image: "https://image.tmdb.org/t/p/w500/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" },
+    { title: "The Godfather", rating: 9.2, image: "https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg" },
+    { title: "The Dark Knight", rating: 9.0, image: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg" },
+    { title: "Pulp Fiction", rating: 8.9, image: "https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg" },
+    { title: "Interstellar", rating: 8.7, image: "https://image.tmdb.org/t/p/w500/gEU2QniL6C8z1BHu8sqQjsuw0nw.jpg" },
+    { title: "Fight Club", rating: 8.4, image: "https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7Qf4n6a87u0.jpg" },
   ]
 };
 
+// --- DATA DUMMY (KIDS CONTENT) ---
 const KIDS_CONTENT = {
   trending: [
-    { title: "The Good Dinosaur", image: "https://image.tmdb.org/t/p/w200/8cGZ476v98rEB7n6lEpsu0Y4u85.jpg" },
-    { title: "Zootopia", image: "https://image.tmdb.org/t/p/w200/hlK0e0wAQ3V0CsVLz1No7nFGv13.jpg" },
-    { title: "Inside Out", image: "https://image.tmdb.org/t/p/w200/lRHE0vzf3oYJrhbsHXjIkF4y53E.jpg" },
-    { title: "Minions", image: "https://image.tmdb.org/t/p/w200/q0R4crx2SehcEEQJhYXIjNRQ866.jpg" },
+    { title: "Super Mario Bros", image: "https://image.tmdb.org/t/p/w500/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg" },
+    { title: "Minions: The Rise of Gru", image: "https://image.tmdb.org/t/p/w500/wKiOkZTN9lUUUNZLmtnwubZYONg.jpg" },
+    { title: "Zootopia 2", image: "https://image.tmdb.org/t/p/w500/3Wg1LBCiTEXTxRrkNKOqJyyIFyF.jpg" },
+    { title: "Encanto", image: "https://image.tmdb.org/t/p/w500/4j0PNHkMr5ax3IA8tjtxcmPU3QT.jpg" },
+    { title: "Sing 2", image: "https://image.tmdb.org/t/p/w500/aWeKITRFbbwY8txG5uCj4rMCfSP.jpg" },
   ],
   topRating: [
-    { title: "The Good Dinosaur", rating: 9.9, image: "https://image.tmdb.org/t/p/w200/8cGZ476v98rEB7n6lEpsu0Y4u85.jpg" },
-    { title: "Zootopia", rating: 9.9, image: "https://image.tmdb.org/t/p/w200/hlK0e0wAQ3V0CsVLz1No7nFGv13.jpg" },
-    { title: "Inside Out", rating: 9.8, image: "https://image.tmdb.org/t/p/w200/lRHE0vzf3oYJrhbsHXjIkF4y53E.jpg" },
+    { title: "Coco", rating: 9.8, image: "https://image.tmdb.org/t/p/w500/gGEsBPAijhVUFoiNpgZXqRVWJt2.jpg" },
+    { title: "Toy Story", rating: 9.7, image: "https://image.tmdb.org/t/p/w500/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg" },
+    { title: "Inside Out", rating: 9.6, image: "https://image.tmdb.org/t/p/w500/lRHE0vzf3oYJrhbsHXjIkF4y53E.jpg" },
+    { title: "Up", rating: 9.5, image: "https://image.tmdb.org/t/p/w500/vpbaStTMt8qqXaEgnOR2EE4DNJk.jpg" },
+    { title: "Lion King", rating: 9.4, image: "https://image.tmdb.org/t/p/w500/sKCr78MXSLixwmZ8DyJLrpMsd15.jpg" },
   ]
 };
 
 // --- 2. LOGIKA UTAMA ---
-
 document.addEventListener('DOMContentLoaded', () => {
-  // Cek Status: Apakah yang login ini Kids?
   const isKidsMode = localStorage.getItem('isKidsMode') === 'true';
   const activeUser = localStorage.getItem('activeProfile') || 'User';
 
   console.log(`Dashboard Loaded. User: ${activeUser}, Kids Mode: ${isKidsMode}`);
 
-  // Pilih Data yang sesuai
   const data = isKidsMode ? KIDS_CONTENT : ADULT_CONTENT;
-
-  // Render Halaman
   renderDashboard(data, isKidsMode);
 });
 
 // --- 3. FUNGSI RENDER HTML ---
-
 function renderDashboard(data, isKids) {
   const container = document.getElementById('mainContent');
-  container.innerHTML = ''; // Bersihkan loading text
+  container.innerHTML = ''; 
 
-  // A. SECTION 1: TRENDING NOW (Ada Angka Besar 1, 2, 3)
+  // --- SECTION 1: TRENDING 10 (FIXED) ---
   const trendingSection = `
     <div class="flex flex-col gap-4 animate-fade-in">
-      <h2 class="text-white text-lg font-semibold px-6">Trending Now</h2>
+      <h2 class="text-white text-lg font-semibold px-6">Trending 10 Now</h2>
       
-      <div class="flex overflow-x-auto gap-4 px-6 pb-4 scrollbar-hide">
+      <div class="flex overflow-x-auto overflow-y-hidden gap-6 px-6 pb-16 pt-2 scrollbar-hide items-end h-auto w-full">
         ${data.trending.map((movie, index) => `
-          <div class="relative flex-shrink-0 w-36 cursor-pointer hover:scale-105 transition-transform duration-300">
-            <img src="${movie.image}" alt="${movie.title}" class="w-full h-52 object-cover rounded-xl shadow-lg">
+          <div class="relative flex-shrink-0 w-36 cursor-pointer hover:scale-105 transition-transform duration-300 group">
             
-            <h1 class="absolute -bottom-4 -left-4 text-[80px] font-anton text-black" 
-                style="-webkit-text-stroke: 2px #CC361E; text-stroke: 2px #CC361E; line-height: 1;">
+            <img src="${movie.image}" alt="${movie.title}" class="w-full h-52 object-cover rounded-xl shadow-lg border border-transparent group-hover:border-gray-500 relative z-10">
+            
+            <h1 class="absolute -bottom-10 -left-6 text-[100px] font-anton text-black select-none z-20 pointer-events-none" 
+                style="-webkit-text-stroke: 2px #CC361E; text-stroke: 2px #CC361E; line-height: 1; text-shadow: 2px 2px 0px rgba(0,0,0,0.5);">
               ${index + 1}
             </h1>
           </div>
@@ -73,24 +80,22 @@ function renderDashboard(data, isKids) {
   `;
   container.innerHTML += trendingSection;
 
-
-  // B. SECTION 2: TOP RATING (Ada Bintang Kuning)
-  // Kita pakai fungsi helper biar kodingan rapi karena layoutnya sama untuk kategori lain
+  // --- SECTION 2: TOP RATING ---
   container.innerHTML += createSectionHTML("Top Rating", data.topRating);
   
-  // C. SECTION 3: TOP RATING MOVIE (Duplikasi data biar terlihat penuh)
-  container.innerHTML += createSectionHTML("Top Rating Movie", data.topRating);
+  // --- SECTION 3: POPULAR ---
+  container.innerHTML += createSectionHTML("Popular Movies", [...data.trending].reverse());
   
-  // D. SECTION 4: TOP RATING SERIES (Hanya muncul kalau bukan Kids, opsional)
+  // --- SECTION 4: SERIES ---
   if (!isKids) {
-    container.innerHTML += createSectionHTML("Top Rating Series", ADULT_CONTENT.topRating); 
+    container.innerHTML += createSectionHTML("Top Series", ADULT_CONTENT.topRating); 
   }
 }
 
-// Helper Function untuk membuat section standar
+// --- HELPER FUNCTION (Digunakan untuk section selain Trending) ---
 function createSectionHTML(title, movies) {
   return `
-    <div class="flex flex-col gap-4 animate-fade-in">
+    <div class="flex flex-col gap-4 animate-fade-in pb-8">
       <h2 class="text-white text-lg font-semibold px-6">${title}</h2>
       
       <div class="flex overflow-x-auto gap-4 px-6 pb-4 scrollbar-hide">
@@ -98,10 +103,12 @@ function createSectionHTML(title, movies) {
           <div class="relative flex-shrink-0 w-32 cursor-pointer hover:scale-105 transition-transform duration-300">
             <img src="${movie.image}" alt="${movie.title}" class="w-full h-48 object-cover rounded-xl shadow-md">
             
+            ${movie.rating ? `
             <div class="flex items-center gap-1 mt-2">
               <svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
               <span class="text-xs text-gray-300 font-medium">${movie.rating}</span>
             </div>
+            ` : ''}
           </div>
         `).join('')}
       </div>
