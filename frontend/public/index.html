@@ -1,12 +1,270 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>index</title>
-</head>
-<body>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meowing - Watch Movies</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Anton+SC&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#CC361E',    // Merah
+            dark: '#0a0a0a',     // Hitam Background
+            card: '#1a1a1a',     // Hitam Card
+          },
+          fontFamily: {
+            anton: ['Anton', 'sans-serif'],      // Font Tebal untuk Angka 1,2,3
+            logo: ['"Anton SC"', 'sans-serif'],  // Font Logo
+            poppins: ['Poppins', 'sans-serif'],
+          },
+          animation: {
+            'slide-up': 'slideUp 0.3s ease-out forwards',
+            'fade-in': 'fadeIn 0.5s ease-out forwards',
+          },
+          keyframes: {
+            slideUp: {
+              '0%': { transform: 'translateY(100%)' },
+              '100%': { transform: 'translateY(0)' },
+            },
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Utility: Hide Scrollbar */
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    /* Utility: Masking gambar popup */
+    .mask-gradient {
+        mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%);
+    }
+
+    /* === GAYA ANGKA (HITAM dengan OUTLINE MERAH) === */
+    .text-outline {
+        /* Isi Angka: Hitam */
+        color: #000000; 
+        
+        /* Outline: Merah Tebal */
+        -webkit-text-stroke: 4px #CC361E; 
+        text-stroke: 4px #CC361E; /* Standard property (future proof) */
+        
+        /* Agar outline tidak memakan bagian dalam angka */
+        paint-order: stroke fill;
+    }
+  </style>
+</head>
+
+<body class="bg-black text-white min-h-screen font-poppins pb-20 relative overflow-x-hidden selection:bg-brand selection:text-white">
+
+  <nav class="flex items-center justify-between px-6 py-5 sticky top-0 z-40 bg-black/90 backdrop-blur-sm border-b border-gray-800/50">
+    <h1 class="text-3xl font-logo text-brand tracking-wide cursor-pointer hover:scale-105 transition-transform">MEOWING</h1>
+    <div class="flex items-center gap-6">
+      <button class="text-white hover:text-brand transition"><i class="fas fa-search text-xl"></i></button>
+      <button onclick="toggleSidebar()" class="text-white hover:text-brand transition"><i class="fas fa-bars text-2xl"></i></button>
+    </div>
+  </nav>
+
+  <div id="sidebar" class="fixed inset-y-0 right-0 w-full md:w-80 bg-dark z-50 transform translate-x-full transition-transform duration-300 ease-in-out p-6 shadow-2xl flex flex-col">
+      <div class="flex flex-row-reverse justify-between items-center mb-10">
+          <button onclick="toggleSidebar()" class="text-white text-3xl hover:text-brand transition"><i class="fas fa-times"></i></button>
+          <span class="text-xl font-bold text-gray-400">Menu</span>
+      </div>
+      <ul class="space-y-6 text-lg font-medium">
+          <li class="flex justify-between items-center cursor-pointer hover:text-brand transition group">
+              <span class="flex items-center gap-4"><i class="far fa-user w-6 text-center"></i> Profile</span>
+              <i class="fas fa-chevron-right text-sm text-gray-600 group-hover:text-brand"></i>
+          </li>
+          <li class="flex justify-between items-center cursor-pointer hover:text-brand transition group">
+              <span class="flex items-center gap-4"><i class="fas fa-cog w-6 text-center"></i> Account</span>
+              <i class="fas fa-chevron-right text-sm text-gray-600 group-hover:text-brand"></i>
+          </li>
+          <li onclick="alert('Logged Out!')" class="flex justify-between items-center cursor-pointer hover:text-brand transition group mt-auto text-red-500">
+              <span class="flex items-center gap-4"><i class="fas fa-sign-out-alt w-6 text-center"></i> Log Out</span>
+          </li>
+      </ul>
+  </div>
+
+  <div id="mainContent" class="mt-2 flex flex-col gap-8 min-h-[500px]">
+    <div class="px-6 text-gray-500 animate-pulse">Loading content...</div>
+  </div>
+
+  <div id="movieModal" onclick="closeModal(event)" class="fixed inset-0 bg-black/90 z-[100] hidden justify-center items-end opacity-0 transition-opacity duration-300 backdrop-blur-sm">
+      <div class="bg-[#111] w-full max-w-lg rounded-t-3xl overflow-hidden relative animate-slide-up pb-8 shadow-2xl border-t border-gray-800">
+          <div class="relative w-full h-[400px]">
+              <img src="" id="modalImage" class="w-full h-full object-cover mask-gradient">
+              <button onclick="closeModalDirect()" class="absolute top-5 right-5 bg-black/50 text-white w-10 h-10 flex items-center justify-center rounded-full backdrop-blur-md hover:bg-brand transition z-20">
+                  <i class="fas fa-times"></i>
+              </button>
+          </div>
+          <div class="px-6 -mt-20 relative z-10">
+              <h2 id="modalTitle" class="text-4xl font-bold mb-2 leading-tight text-white drop-shadow-lg font-logo">Title</h2>
+              <div class="flex items-center text-gray-300 text-sm mb-6 space-x-3 font-medium">
+                  <div class="flex items-center gap-1 text-white bg-yellow-600/20 px-2 py-0.5 rounded border border-yellow-600/50">
+                      <i class="fas fa-star text-yellow-500 text-xs"></i>
+                      <span id="modalRating">0.0</span>
+                  </div>
+                  <span>2024</span> • <span>Action</span>
+              </div>
+              <div class="flex space-x-3">
+                  <button class="flex-1 bg-[#222] text-white py-3.5 rounded-lg font-semibold flex justify-center items-center gap-2 hover:bg-[#333] transition border border-gray-700">
+                      <i class="fas fa-plus"></i> Watchlist
+                  </button>
+                  <button class="flex-1 bg-brand text-white py-3.5 rounded-lg font-semibold flex justify-center items-center gap-2 hover:bg-red-700 transition shadow-lg shadow-red-900/20">
+                      Details
+                  </button>
+              </div>
+          </div>
+      </div>
+  </div>
+
+<script>
+    // --- 1. DATA FILM (Sama seperti sebelumnya) ---
+    const CONTENT_DATA = {
+        trending: [
+            { title: "Stranger Things", image: "https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg", rating: "8.6" },
+            { title: "Wednesday", image: "https://image.tmdb.org/t/p/w500/9PFonBhy4cQy7Jz20NpMygczOkv.jpg", rating: "8.5" },
+            { title: "The Last of Us", image: "https://image.tmdb.org/t/p/w500/uKvVjHNqB5VmOrdxqAt2F7J78ED.jpg", rating: "9.0" },
+            { title: "Squid Game", image: "https://image.tmdb.org/t/p/w500/dDlEmu3EZ0Pgg93K2SVNLCjCSvE.jpg", rating: "8.4" },
+            { title: "Money Heist", image: "https://image.tmdb.org/t/p/w500/reEMJA1uzscCbkpeRJeTT2bjqUp.jpg", rating: "8.3" },
+            { title: "Trolls 2", image: "https://image.tmdb.org/t/p/w500/1rOY8NCGEpOGVQ2EzMJb6B7Ni6X.jpg", rating: "6.8" },
+            { title: "Breaking Bad", image: "https://image.tmdb.org/t/p/w500/ggFHVNu6YYI5L9pCfOacjizRGt.jpg", rating: "9.5" },
+            { title: "Game of Thrones", image: "https://image.tmdb.org/t/p/w500/1XS1oqL89opfnbLl8WnZY1O1uJx.jpg", rating: "9.3" },
+            { title: "The Witcher", image: "https://image.tmdb.org/t/p/w500/cRLz8VjRHyqUaV0F0YvJ4Jjq4tD.jpg", rating: "8.1" },
+            { title: "Loki", image: "https://image.tmdb.org/t/p/w500/voHUmluYmKyleFk7mnVRwnINLOC.jpg", rating: "8.2" },
+        ],
+        topRating: [
+            { title: "The Shawshank Redemption", rating: 9.3, image: "https://image.tmdb.org/t/p/w500/q6y0Go1tsGEsmtFryDOJo3dEmqu.jpg" },
+            { title: "The Godfather", rating: 9.2, image: "https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg" },
+            { title: "The Dark Knight", rating: 9.0, image: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg" },
+            { title: "Pulp Fiction", rating: 8.9, image: "https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg" },
+            { title: "Interstellar", rating: 8.7, image: "https://image.tmdb.org/t/p/w500/gEU2QniL6C8z1BHu8sqQjsuw0nw.jpg" },
+            { title: "Fight Club", rating: 8.4, image: "https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7Qf4n6a87u0.jpg" },
+        ],
+        anime: [
+            { title: "One Piece", rating: 8.9, image: "https://image.tmdb.org/t/p/w500/cMD9Ygz11yjJNZ1lFBTNn30DNWQ.jpg" },
+            { title: "Demon Slayer", rating: 8.7, image: "https://image.tmdb.org/t/p/w500/xUfRZu2mi8jH6SzQEYdB9authIx.jpg" },
+            { title: "Jujutsu Kaisen", rating: 8.6, image: "https://image.tmdb.org/t/p/w500/hD8yEwdAwLjCWOgF9VtpO0wlo28.jpg" },
+            { title: "Attack on Titan", rating: 9.0, image: "https://image.tmdb.org/t/p/w500/hTP1DtLGFamjfu8WqjnuQdP1n4i.jpg" },
+            { title: "Spy x Family", rating: 8.5, image: "https://image.tmdb.org/t/p/w500/3r4LYFuXGw36ai2K8mnxQnB5nNR.jpg" },
+            { title: "Naruto Shippuden", rating: 8.6, image: "https://image.tmdb.org/t/p/w500/zAYRe2bJxpWTVrwwmBc00VFkAf4.jpg" },
+            { title: "Chainsaw Man", rating: 8.4, image: "https://image.tmdb.org/t/p/w500/npdB6eFzizki0WaZ1OvKcJrWe97.jpg" },
+        ],
+        drakor: [
+            { title: "Queen of Tears", rating: 8.8, image: "https://image.tmdb.org/t/p/w500/a3IePLf348450YJ10e82D4jP6f.jpg" }, 
+            { title: "The Glory", rating: 8.9, image: "https://image.tmdb.org/t/p/w500/6jI4yYtMOLjY3ib5dC3k2mN6P5g.jpg" },
+            { title: "All of Us Are Dead", rating: 8.5, image: "https://image.tmdb.org/t/p/w500/pTEFqAjLdnhBVjS5tScG1jWskGb.jpg" },
+            { title: "Vincenzo", rating: 8.8, image: "https://image.tmdb.org/t/p/w500/dvXJgEDVxWWKp95h8N1T8tqD3N2.jpg" },
+            { title: "Moving", rating: 8.9, image: "https://image.tmdb.org/t/p/w500/vf54116vVb5E8i2LzD1aI9dG6w.jpg" }, 
+            { title: "Sweet Home", rating: 8.3, image: "https://image.tmdb.org/t/p/w500/u8d8w15y5a5V5x5G5a5F5a5h5.jpg" }, 
+            { title: "Reply 1988", rating: 9.0, image: "https://image.tmdb.org/t/p/w500/2q2iY8u8G6f8y8G8.jpg" }, 
+        ]
+    };
+
+    // --- 2. RENDER LOGIC ---
+    document.addEventListener('DOMContentLoaded', () => {
+        renderDashboard(CONTENT_DATA);
+    });
+
+    function renderDashboard(data) {
+        const container = document.getElementById('mainContent');
+        container.innerHTML = ''; 
+
+        // SECTION 1: TRENDING 10 (Perbaikan Z-Index & Posisi)
+        const trendingSection = `
+            <div class="flex flex-col gap-4 animate-fade-in">
+                <h2 class="text-white text-xl font-bold px-6 border-l-4 border-brand ml-6">Trending 10 Now</h2>
+                
+                <div class="flex overflow-x-auto overflow-y-hidden gap-10 px-8 pb-10 pt-4 scrollbar-hide items-end h-auto w-full snap-x">
+                    ${data.trending.map((movie, index) => `
+                        <div class="relative flex-shrink-0 w-[140px] cursor-pointer group snap-center" 
+                             onclick="openModal('${movie.title.replace(/'/g, "\\'")}', '${movie.rating}', '${movie.image}')">
+                            
+                            <h1 class="absolute -bottom-6 -left-8 text-[120px] font-anton leading-none z-20 pointer-events-none text-outline select-none drop-shadow-md">
+                                ${index + 1}
+                            </h1>
+
+                            <img src="${movie.image}" alt="${movie.title}" 
+                                 class="w-full h-[210px] object-cover rounded-lg shadow-xl relative z-10 transform group-hover:scale-105 transition-transform duration-300 border-2 border-transparent group-hover:border-gray-500">
+                        </div>
+                    `).join('')}
+                    
+                    <div class="w-8 flex-shrink-0"></div>
+                </div>
+            </div>
+        `;
+        container.innerHTML += trendingSection;
+
+        // SECTION LAINNYA
+        container.innerHTML += createSectionHTML("Top Rated Movies", data.topRating);
+        container.innerHTML += createSectionHTML("Popular Anime", data.anime);
+        container.innerHTML += createSectionHTML("K-Drama Hits", data.drakor);
+    }
+
+    function createSectionHTML(title, movies) {
+        return `
+            <div class="flex flex-col gap-4 animate-fade-in pb-8">
+                <h2 class="text-white text-lg font-bold px-6 ml-6">${title}</h2>
+                <div class="flex overflow-x-auto gap-4 px-6 pb-4 scrollbar-hide snap-x">
+                    ${movies.map(movie => `
+                        <div class="relative flex-shrink-0 w-32 cursor-pointer group snap-start"
+                             onclick="openModal('${movie.title.replace(/'/g, "\\'")}', '${movie.rating}', '${movie.image}')">
+                            <div class="overflow-hidden rounded-lg">
+                                <img src="${movie.image}" alt="${movie.title}" class="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-110 group-hover:opacity-80">
+                            </div>
+                            <div class="flex items-center gap-1 mt-2 text-xs text-gray-400">
+                                <i class="fas fa-star text-yellow-500"></i> ${movie.rating || 'N/A'}
+                            </div>
+                        </div>
+                    `).join('')}
+                    <div class="w-4 flex-shrink-0"></div>
+                </div>
+            </div>
+        `;
+    }
+
+    // --- 3. UI LOGIC (Sidebar & Modal) ---
+    function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('translate-x-full');
+    }
+
+    const modal = document.getElementById('movieModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalRating = document.getElementById('modalRating');
+    const modalImage = document.getElementById('modalImage');
+
+    function openModal(title, rating, imageUrl) {
+        modalTitle.innerText = title;
+        modalRating.innerText = rating;
+        modalImage.src = imageUrl;
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        setTimeout(() => { modal.classList.remove('opacity-0'); }, 10);
+    }
+
+    function closeModal(e) { if (e.target === modal) closeModalDirect(); }
+    
+    function closeModalDirect() {
+        modal.classList.add('opacity-0');
+        setTimeout(() => { modal.classList.remove('flex'); modal.classList.add('hidden'); }, 300);
+    }
+</script>
 </body>
 </html>
-

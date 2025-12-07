@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train to Busan - Detail</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #121212; /* Background Gelap */
+            color: #ffffff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Container agar tampilan seperti mobile app di tengah layar desktop */
+        .mobile-container {
+            max-width: 480px;
+            margin: 0 auto;
+            background-color: #0d0d0d;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Hero Image / Poster */
+        .hero-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+        }
+
+        /* Content Padding */
+        .content {
+            padding: 20px;
+        }
+
+        /* Action Bar (Rating, Love, Bookmark) */
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .rating {
+            display: flex;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .star { color: #FFD700; margin-right: 5px; }
+        .icons span {
+            font-size: 24px;
+            margin-left: 15px;
+            cursor: pointer;
+            color: #ff3d00; /* Warna merah sesuai tema */
+        }
+
+        /* Title Section */
+        h1 { margin: 0 0 10px 0; font-size: 28px; }
+        .meta-info {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            color: #aaa;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .age-rating {
+            border: 1px solid #aaa;
+            padding: 2px 6px;
+            border-radius: 50%;
+            font-size: 12px;
+        }
+
+        /* Section Headers */
+        h2 { font-size: 18px; margin-top: 25px; margin-bottom: 10px; }
+        p { color: #ccc; line-height: 1.5; font-size: 14px; }
+
+        /* Cast Section (Grid Layout) */
+        .cast-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* 2 Kolom */
+            gap: 15px;
+        }
+        .cast-card {
+            background-color: #c62828; /* Background Merah Cast */
+            border-radius: 12px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .cast-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: #ccc;
+        }
+        .cast-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .cast-name { font-weight: bold; font-size: 14px; color: white; }
+        .cast-role { font-size: 12px; color: #ffcccc; }
+
+        /* Watch On Section */
+        .watch-on img {
+            height: 40px;
+            margin-top: 5px;
+        }
+        
+        /* Placeholder Navbar Area */
+        #navbar-placeholder {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="mobile-container">
+        <div id="navbar-placeholder">
+            </div>
+
+        <img src="https://image.tmdb.org/t/p/w300/lyq8uQzxWTCIxWEKuxyQPrbVu40.jpg" alt="TRON: Ares" class="hero-image">
+
+        <div class="content">
+            <div class="action-bar">
+                <div class="rating">
+                    <span class="star">★</span> 9,9
+                </div>
+                <div class="icons">
+                    <span>❤</span> <span>🔖</span> </div>
+            </div>
+
+            <h1>Train to Busan (2016)</h1>
+            <div class="meta-info">
+                <span class="age-rating">15</span>
+                <span>Horror, Thriller, Action, Adventure</span>
+            </div>
+
+            <h2>Deskripsi</h2>
+            <p>When a zombie virus pushes Korea into a state of emergency, those trapped on an express train to Busan must fight for their own survival.</p>
+
+            <h2>Language</h2>
+            <p>Korean</p>
+
+            <h2>Cast</h2>
+            <div class="cast-list">
+                <div class="cast-card">
+                    <img src="https://image.tmdb.org/t/p/w200/6Lp4X8w4wXNqjZp6Y4z5w4w4w4.jpg" alt="Gong Yoo" class="cast-img"> <div class="cast-info">
+                        <span class="cast-name">Gong Yoo</span>
+                        <span class="cast-role">Seok-woo</span>
+                    </div>
+                </div>
+                <div class="cast-card">
+                    <img src="https://image.tmdb.org/t/p/w200/6Lp4X8w4wXNqjZp6Y4z5w4w4w4.jpg" alt="Kim Su-an" class="cast-img">
+                    <div class="cast-info">
+                        <span class="cast-name">Kim Su-an</span>
+                        <span class="cast-role">Soo-ahn</span>
+                    </div>
+                </div>
+                <div class="cast-card">
+                    <img src="https://image.tmdb.org/t/p/w200/6Lp4X8w4wXNqjZp6Y4z5w4w4w4.jpg" alt="Jung Yu-mi" class="cast-img">
+                    <div class="cast-info">
+                        <span class="cast-name">Jung Yu-mi</span>
+                        <span class="cast-role">Sung-gyeong</span>
+                    </div>
+                </div>
+                <div class="cast-card">
+                    <img src="https://image.tmdb.org/t/p/w200/6Lp4X8w4wXNqjZp6Y4z5w4w4w4.jpg" alt="Don Lee" class="cast-img">
+                    <div class="cast-info">
+                        <span class="cast-name">Don Lee</span>
+                        <span class="cast-role">Sang-hwa</span>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Watch On</h2>
+            <div class="watch-on">
+               <span style="color: red; font-weight: bold; font-size: 24px;">N</span> </div>
+        </div>
+        
+        <div id="footer-placeholder"></div>
+    </div>
+
+    <script>
+        // Ini cara sederhana memasukkan navbar.html ke dalam div id="navbar-placeholder"
+        fetch('component/navbar.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('navbar-placeholder').innerHTML = data;
+            });
+    </script>
+</body>
+</html>
