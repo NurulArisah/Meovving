@@ -25,5 +25,21 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
     } else {
         alert("Email atau password salah!");
     }
+
+    // --- TAMBAHAN UNTUK GOOGLE ---
+    function handleGoogleLogin() {
+        // 1. Simpan data dummy seolah-olah user login pakai Google
+        // Kita pakai nama akun Google User
+        localStorage.setItem('activeUser', 'Google User'); 
+        localStorage.setItem('isLoggedIn', 'true');
+
+        // 2. Beri pesan kecil (opsional)
+        alert("Login with Google Berhasil! (Simulasi)");
+
+        // 3. Arahkan ke Who's Watching
+        window.location.href = "whos-watching.html";
+    }
+
+    
 });   
 });

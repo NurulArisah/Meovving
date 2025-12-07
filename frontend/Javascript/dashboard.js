@@ -1,5 +1,3 @@
-// Lokasi: frontend/javascript/dashboard.js
-
 const isKids = localStorage.getItem('isKidsMode') === 'true';
 
 if (isKids) {
@@ -325,4 +323,29 @@ function createSectionHTML(title, movies) {
       </div>
     </div>
   `;
+}
+
+// Navbar
+function goToProfile() {
+    // Arahkan ke halaman profile.html
+    window.location.href = 'profile.html';
+}
+
+function goToAccount() {
+    // Arahkan ke halaman account.html
+    window.location.href = 'account.html';
+}
+
+function handleLogout() {
+    // 1. Konfirmasi logout (opsional)
+    if (confirm("Are you sure you want to log out?")) {
+        // 2. Hapus data sesi di LocalStorage
+        localStorage.removeItem('activeProfile');
+        localStorage.removeItem('isKidsMode');
+        // localStorage.removeItem('activeUser'); // Opsional: Hapus jika ingin user login ulang email
+        // localStorage.removeItem('selectedPlanName'); // Opsional
+
+        // 3. Arahkan kembali ke halaman Login
+        window.location.href = 'login.html';
+    }
 }

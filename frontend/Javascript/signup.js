@@ -38,4 +38,14 @@ async function daftarUser(event) {
         console.error("Koneksi gagal:", err);
         alert("Server tidak merespon. Pastikan Server Go sudah jalan dan Firewall laptop Backend sudah dibuka.");
     }
+    
+    // --- TAMBAHAN UNTUK GOOGLE ---
+    function handleGoogleLogin() {
+        // Anggap user setuju mendaftar pakai akun Googlenya
+        localStorage.setItem('activeUser', 'Google User'); 
+        
+        // Karena ini signup, biasanya lanjut ke pilih paket dulu
+        alert("Signup with Google Berhasil! (Simulasi)");
+        window.location.href = "package.html";
+    }
 }
