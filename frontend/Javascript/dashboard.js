@@ -1,6 +1,6 @@
 // Lokasi: frontend/javascript/dashboard.js
 
-// --- 1. DATA DUMMY --- 
+// --- DATA FILM DUMMY (TIDAK DIUBAH) ---
 const ADULT_CONTENT = {
   trending: [
     { title: "Stranger Things", image: "https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg", rating: "8.6" },
@@ -46,32 +46,86 @@ const KIDS_CONTENT = {
   ]
 };
 
+// Data Dummy "Riwayat Pencarian"
+const POPULAR_SEARCHES = [
+    "Boston Blue",
+    "Black Phone 2",
+    "The Woman In Cabin 10",
+    "The Diplomat",
+    "Monster",
+    "Task"
+];
+
 let CURRENT_ACTIVE_DATA = {}; 
 let IS_KIDS_MODE = false;
 
 document.addEventListener('DOMContentLoaded', () => {
   IS_KIDS_MODE = localStorage.getItem('isKidsMode') === 'true';
-  const activeUser = localStorage.getItem('activeProfile') || 'User';
-  console.log(`Dashboard Loaded. User: ${activeUser}, Kids Mode: ${IS_KIDS_MODE}`);
-  
   CURRENT_ACTIVE_DATA = IS_KIDS_MODE ? KIDS_CONTENT : ADULT_CONTENT;
+  
+  // Render Dashboard
   renderDashboard(CURRENT_ACTIVE_DATA, IS_KIDS_MODE);
+  
+  // Render Dummy Popular Searches
+  renderPopularSearches();
+  
+  // Setup tombol filter agar bisa diklik (UI only)
+  setupFilterButtons();
 });
 
-// SEARCH LOGIC
-function toggleSearch() {
-    const input = document.getElementById('searchInput');
-    if (input.style.width === '0px' || input.value === '') {
-        input.focus();
-    } else {
-        doSearch(input.value);
+// --- NEW SEARCH LOGIC (OVERLAY STYLE) ---
+
+function openSearchOverlay() {
+    const overlay = document.getElementById('searchOverlay');
+    overlay.classList.remove('hidden');
+    overlay.classList.add('flex');
+    document.getElementById('overlaySearchInput').focus();
+    // Default: Tampilkan Popular, Sembunyikan Filter & Result
+    document.getElementById('popularSearchSection').classList.remove('hidden');
+    document.getElementById('filterSection').classList.add('hidden');
+    document.getElementById('overlaySearchResults').classList.add('hidden');
+}
+
+function closeSearchOverlay() {
+    const overlay = document.getElementById('searchOverlay');
+    overlay.classList.add('hidden');
+    overlay.classList.remove('flex');
+}
+
+function renderPopularSearches() {
+    const list = document.getElementById('popularList');
+    list.innerHTML = POPULAR_SEARCHES.map(item => `
+        <li class="flex items-center gap-3 cursor-pointer hover:text-white transition group" onclick="searchFromHistory('${item}')">
+            <i class="fas fa-arrow-trend-up text-gray-500 group-hover:text-brand"></i>
+            <span>${item}</span>
+        </li>
+    `).join('');
+}
+
+function searchFromHistory(keyword) {
+    document.getElementById('overlaySearchInput').value = keyword;
+    handleOverlayInput(keyword);
+}
+
+function handleOverlayInput(keyword) {
+    const popularSec = document.getElementById('popularSearchSection');
+    const resultSec = document.getElementById('overlaySearchResults');
+    const filterSec = document.getElementById('filterSection');
+
+    if (!keyword) {
+        // Jika kosong, tampilkan popular lagi
+        popularSec.classList.remove('hidden');
+        resultSec.classList.add('hidden');
+        filterSec.classList.add('hidden');
+        return;
     }
-}
-function handleEnter(e) {
-    if (e.key === 'Enter') doSearch(e.target.value);
-}
-function doSearch(keyword) {
-    if (!keyword) return;
+
+    // Sembunyikan Popular & Filter saat mengetik
+    popularSec.classList.add('hidden');
+    filterSec.classList.add('hidden'); 
+    resultSec.classList.remove('hidden');
+
+    // Lakukan pencarian
     const lowerKeyword = keyword.toLowerCase();
     let results = [];
     Object.keys(CURRENT_ACTIVE_DATA).forEach(category => {
@@ -81,39 +135,67 @@ function doSearch(keyword) {
         results = [...results, ...matches];
     });
     results = [...new Set(results)];
-    renderSearchResults(results, keyword);
-}
-function renderSearchResults(results, keyword) {
-    const container = document.getElementById('mainContent');
+
     if (results.length === 0) {
-        container.innerHTML = `<div class="text-center text-gray-500 mt-20 text-xl">No results found for "${keyword}"</div>`;
-        return;
-    }
-    container.innerHTML = `
-        <div class="flex flex-col gap-4 animate-fade-in pb-8">
-            <h2 class="text-white text-xl font-bold px-6">Search Results: "${keyword}"</h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 px-6">
-                ${results.map(movie => `
-                    <div class="relative cursor-pointer group hover:scale-105 transition-transform"
-                         onclick="openModal('${movie.title.replace(/'/g, "\\'")}', '${movie.rating || 'N/A'}', '${movie.image}')">
-                        <img src="${movie.image}" alt="${movie.title}" class="w-full h-64 object-cover rounded-lg">
-                        <div class="mt-2 text-sm text-center font-semibold">${movie.title}</div>
-                    </div>
-                `).join('')}
+        resultSec.innerHTML = `<div class="col-span-2 text-center text-gray-500 mt-10">No results found</div>`;
+    } else {
+        resultSec.innerHTML = results.map(movie => `
+            <div class="flex items-center gap-3 bg-[#1a1a1a] p-2 rounded-lg cursor-pointer hover:bg-[#222]" 
+                 onclick="openModal('${movie.title.replace(/'/g, "\\'")}', '${movie.rating || 'N/A'}', '${movie.image}')">
+                <img src="${movie.image}" class="w-16 h-20 object-cover rounded-md">
+                <div>
+                    <div class="font-bold text-sm">${movie.title}</div>
+                    <div class="text-xs text-gray-400"><i class="fas fa-star text-yellow-500"></i> ${movie.rating || 'N/A'}</div>
+                </div>
             </div>
-            <button onclick="resetDashboard()" class="mx-auto mt-10 bg-brand px-6 py-2 rounded-full hover:bg-red-700 transition text-white font-bold">Back to Home</button>
-        </div>
-    `;
-}
-function resetDashboard() {
-    document.getElementById('searchInput').value = '';
-    renderDashboard(CURRENT_ACTIVE_DATA, IS_KIDS_MODE);
+        `).join('');
+    }
 }
 
-// SIDEBAR & MODAL LOGIC
+// FILTER LOGIC UI
+function toggleFilterSection() {
+    const filterSec = document.getElementById('filterSection');
+    const popularSec = document.getElementById('popularSearchSection');
+    const resultSec = document.getElementById('overlaySearchResults');
+    const input = document.getElementById('overlaySearchInput');
+
+    // Kosongkan input biar tidak bingung
+    input.value = '';
+    
+    if (filterSec.classList.contains('hidden')) {
+        filterSec.classList.remove('hidden');
+        popularSec.classList.add('hidden');
+        resultSec.classList.add('hidden');
+    } else {
+        filterSec.classList.add('hidden');
+        popularSec.classList.remove('hidden');
+    }
+}
+
+function setupFilterButtons() {
+    const btns = document.querySelectorAll('.filter-btn');
+    btns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            btn.classList.toggle('active');
+        });
+    });
+}
+
+function applyFilter() {
+    // UI Mockup: Kembali ke tampilan popular atau tutup filter
+    toggleFilterSection();
+}
+
+// --- LOGIKA DASHBOARD (TIDAK BERUBAH) ---
+
+function resetDashboard() {
+    window.location.reload();
+}
+
 function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('translate-x-full');
 }
+
 const modal = document.getElementById('movieModal');
 const modalTitle = document.getElementById('modalTitle');
 const modalRating = document.getElementById('modalRating');
@@ -127,31 +209,29 @@ function openModal(title, rating, imageUrl) {
     modal.classList.add('flex');
     setTimeout(() => { modal.classList.remove('opacity-0'); }, 10);
 }
+
 function closeModal(e) { if (e.target === modal) closeModalDirect(); }
+
 function closeModalDirect() {
     modal.classList.add('opacity-0');
     setTimeout(() => { modal.classList.remove('flex'); modal.classList.add('hidden'); }, 300);
 }
 
-// RENDER UTAMA
 function renderDashboard(data, isKids) {
   const container = document.getElementById('mainContent');
   container.innerHTML = ''; 
 
-  // TRENDING 10 (Angka di Depan + Shadow Outline)
+  // TRENDING (ANGKA DI DEPAN + SHADOW)
   const trendingSection = `
     <div class="flex flex-col gap-4 animate-fade-in">
       <h2 class="text-white text-lg font-semibold px-6 border-l-4 border-brand ml-6">Trending 10 Now</h2>
-      
       <div class="flex overflow-x-auto overflow-y-hidden gap-10 px-8 pb-10 pt-4 scrollbar-hide items-end h-auto w-full snap-x">
         ${data.trending.map((movie, index) => `
           <div class="relative flex-shrink-0 w-[140px] cursor-pointer group snap-center" 
                onclick="openModal('${movie.title.replace(/'/g, "\\'")}', '${movie.rating || 'N/A'}', '${movie.image}')">
-            
             <h1 class="absolute -bottom-6 -left-8 text-[120px] font-anton leading-none z-20 pointer-events-none text-outline-shadow select-none drop-shadow-md">
               ${index + 1}
             </h1>
-
             <img src="${movie.image}" alt="${movie.title}" class="w-full h-[210px] object-cover rounded-xl shadow-lg border border-transparent group-hover:border-gray-500 relative z-10">
           </div>
         `).join('')}
@@ -161,7 +241,6 @@ function renderDashboard(data, isKids) {
   `;
   container.innerHTML += trendingSection;
 
-  // SECTION LAINNYA
   container.innerHTML += createSectionHTML("Top Rating", data.topRating);
   container.innerHTML += createSectionHTML("Popular Movies", [...data.trending].reverse());
   

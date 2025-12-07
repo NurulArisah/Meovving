@@ -30,26 +30,18 @@
   </script>
 
   <style>
-    /* Utility: Hide Scrollbar */
     .scrollbar-hide::-webkit-scrollbar { display: none; }
     .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-    
-    /* Utility: Masking gambar popup */
     .mask-gradient { mask-image: linear-gradient(to bottom, black 50%, transparent 100%); -webkit-mask-image: linear-gradient(to bottom, black 50%, transparent 100%); }
     
-    /* Menggunakan text-shadow untuk meniru efek outline */
+    /* STYLE ANGKA (JANGAN DIUBAH) */
     .text-outline-shadow {
-        color: #000000; /* Warna Isi: Hitam */
-        text-shadow: 
-            2px 0px 0 #CC361E, 
-           -2px 0px 0 #CC361E, 
-            0px 2px 0 #CC361E, 
-            0px -2px 0 #CC361E,
-            1px 1px 0 #CC361E,
-           -1px -1px 0 #CC361E,
-            1px -1px 0 #CC361E,
-           -1px 1px 0 #CC361E; /* Garis Tepi: Merah */
+        color: #000000;
+        text-shadow: 2px 0px 0 #CC361E, -2px 0px 0 #CC361E, 0px 2px 0 #CC361E, 0px -2px 0 #CC361E, 1px 1px 0 #CC361E, -1px -1px 0 #CC361E, 1px -1px 0 #CC361E, -1px 1px 0 #CC361E;
     }
+
+    /* Style Filter Button (Active State) */
+    .filter-btn.active { background-color: #CC361E; color: white; border-color: #CC361E; }
   </style>
 </head>
 
@@ -59,14 +51,9 @@
     <h1 onclick="resetDashboard()" class="text-3xl font-logo text-brand tracking-wide cursor-pointer hover:scale-105 transition-transform">MEOWING</h1>
     
     <div class="flex items-center gap-4">
-      <div class="relative group flex items-center bg-transparent border border-transparent rounded-full px-2 transition-all duration-300 focus-within:border-gray-600 focus-within:bg-gray-900/50">
-        <input type="text" id="searchInput" placeholder="Search titles..." 
-               class="bg-transparent border-none outline-none text-white text-sm w-0 focus:w-32 transition-all duration-300 placeholder-gray-500"
-               onkeypress="handleEnter(event)">
-        <button onclick="toggleSearch()" class="text-white hover:text-brand transition p-2">
-            <i class="fas fa-search text-xl"></i>
-        </button>
-      </div>
+      <button onclick="openSearchOverlay()" class="text-white hover:text-brand transition p-2">
+          <i class="fas fa-search text-xl"></i>
+      </button>
 
       <button onclick="toggleSidebar()" class="text-white hover:text-brand transition">
         <i class="fas fa-bars text-2xl"></i>
@@ -74,7 +61,60 @@
     </div>
   </nav>
 
-  <div id="sidebar" class="fixed inset-y-0 right-0 w-full md:w-80 bg-dark z-50 transform translate-x-full transition-transform duration-300 ease-in-out p-6 shadow-2xl flex flex-col">
+  <div id="mainContent" class="flex flex-col gap-8 mt-2 min-h-[500px]">
+    <div class="px-6 text-gray-500 animate-pulse">Loading content...</div>
+  </div>
+
+  <div id="searchOverlay" class="fixed inset-0 bg-black z-[60] hidden flex-col p-6 overflow-y-auto animate-fade-in">
+    
+    <div class="flex items-center gap-3 mb-8">
+        <div class="flex-1 bg-[#1a1a1a] rounded-xl flex items-center px-4 py-3 border border-gray-800 focus-within:border-gray-500 transition">
+            <i class="fas fa-search text-gray-400"></i>
+            <input type="text" id="overlaySearchInput" placeholder="Search..." class="bg-transparent border-none outline-none text-white ml-3 w-full placeholder-gray-500" oninput="handleOverlayInput(this.value)">
+        </div>
+        
+        <button onclick="toggleFilterSection()" class="bg-[#1a1a1a] rounded-xl w-12 h-12 flex items-center justify-center border border-gray-800 hover:border-brand transition">
+            <i class="fas fa-sliders-h text-white"></i> </button>
+
+        <button onclick="closeSearchOverlay()" class="text-white font-medium ml-2">Cancel</button>
+    </div>
+
+    <div id="popularSearchSection" class="block">
+        <h3 class="text-brand font-bold text-lg mb-4">Popular Searching</h3>
+        <ul id="popularList" class="space-y-4">
+            </ul>
+    </div>
+
+    <div id="filterSection" class="hidden mb-8">
+        <div class="mb-6">
+            <h3 class="text-brand font-bold text-lg mb-3">Genre</h3>
+            <div class="flex flex-wrap gap-3">
+                <button class="filter-btn px-6 py-2 rounded-full bg-[#222] text-gray-300 text-sm font-medium border border-transparent hover:border-gray-500 transition">Action</button>
+                <button class="filter-btn px-6 py-2 rounded-full bg-[#222] text-gray-300 text-sm font-medium border border-transparent hover:border-gray-500 transition">Horror</button>
+                <button class="filter-btn px-6 py-2 rounded-full bg-[#222] text-gray-300 text-sm font-medium border border-transparent hover:border-gray-500 transition">Comedy</button>
+                <button class="filter-btn px-6 py-2 rounded-full bg-[#222] text-gray-300 text-sm font-medium border border-transparent hover:border-gray-500 transition">Thriller</button>
+                <button class="filter-btn px-6 py-2 rounded-full bg-[#222] text-gray-300 text-sm font-medium border border-transparent hover:border-gray-500 transition">Romance</button>
+            </div>
+        </div>
+
+        <div>
+            <h3 class="text-brand font-bold text-lg mb-3">Rating</h3>
+            <div class="flex flex-wrap gap-3">
+                <button class="filter-btn px-6 py-2 rounded-full bg-[#222] text-gray-300 text-sm font-medium border border-transparent hover:border-gray-500 transition">5 - 3.5</button>
+                <button class="filter-btn px-6 py-2 rounded-full bg-[#222] text-gray-300 text-sm font-medium border border-transparent hover:border-gray-500 transition">3.5 - 2</button>
+                <button class="filter-btn px-6 py-2 rounded-full bg-[#222] text-gray-300 text-sm font-medium border border-transparent hover:border-gray-500 transition">2 - 0</button>
+            </div>
+        </div>
+        
+        <button onclick="applyFilter()" class="w-full bg-brand text-white font-bold py-3 rounded-xl mt-8 shadow-lg shadow-red-900/20">Apply Filter</button>
+    </div>
+
+    <div id="overlaySearchResults" class="hidden grid grid-cols-2 gap-4">
+        </div>
+
+  </div>
+
+  <div id="sidebar" class="fixed inset-y-0 right-0 w-full md:w-80 bg-dark z-[70] transform translate-x-full transition-transform duration-300 ease-in-out p-6 shadow-2xl flex flex-col">
       <div class="flex flex-row-reverse justify-between items-center mb-10">
           <button onclick="toggleSidebar()" class="text-white text-3xl hover:text-brand transition"><i class="fas fa-times"></i></button>
           <span class="text-xl font-bold text-gray-400">Menu</span>
@@ -85,10 +125,6 @@
           <li onclick="window.location.href='whos-watching.html'" class="flex justify-between items-center cursor-pointer hover:text-brand transition group"><span class="flex items-center gap-4"><i class="fas fa-users w-6 text-center"></i> Switch Profile</span></li>
           <li onclick="alert('Logged Out!')" class="flex justify-between items-center cursor-pointer hover:text-brand transition group mt-auto text-red-500"><span class="flex items-center gap-4"><i class="fas fa-sign-out-alt w-6 text-center"></i> Log Out</span></li>
       </ul>
-  </div>
-
-  <div id="mainContent" class="flex flex-col gap-8 mt-2 min-h-[500px]">
-    <div class="px-6 text-gray-500 animate-pulse">Loading content...</div>
   </div>
 
   <div id="movieModal" onclick="closeModal(event)" class="fixed inset-0 bg-black/90 z-[100] hidden justify-center items-end opacity-0 transition-opacity duration-300 backdrop-blur-sm">
@@ -112,5 +148,6 @@
   </div>
 
   <script src="../javascript/dashboard.js"></script>
+
 </body>
 </html>
