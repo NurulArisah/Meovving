@@ -1,25 +1,35 @@
 // Lokasi: frontend/javascript/whos-watching.js
 
 // ==========================================
-// KONFIGURASI PAKET ('individual', 'duo', 'family')
-// Ubah variabel ini untuk melihat perubahan tampilan UI
-const CURRENT_PLAN = 'family'; 
+// 1. AMBIL DATA DINAMIS DARI LOCAL STORAGE
+// ==========================================
+
+// Ambil paket yang dipilih dari halaman Package
+// Jika tidak ada data (misal langsung login), default ke 'individual'
+const storedPlan = localStorage.getItem('selectedPlanName'); 
+const CURRENT_PLAN = storedPlan ? storedPlan.toLowerCase() : 'individual'; 
+
+// Ambil username dari halaman Login/Signup
+// Jika tidak ada data, default ke 'Me'
+const mainUserName = localStorage.getItem('activeUser') || 'Me'; 
+
 // ==========================================
 
 const PLAN_LIMITS = {
   'individual': 1,
   'duo': 2,
-  'family': 5
+  'family': 5,
+  'premium': 5 // Jaga-jaga jika nama paketnya 'premium' tapi fiturnya sama kayak family
 };
 
-// Data Dummy Awal
+// Data Profil Awal (Otomatis menggunakan nama User Utama)
 let profiles = [
-  { id: 1, name: 'Me', color: 'bg-blue-700', isKids: false }
+  { id: 1, name: mainUserName, color: 'bg-blue-700', isKids: false }
 ];
 
 // --- LOGIKA KHUSUS FAMILY: AUTO ADD KIDS PROFILE ---
-// Jika paket family, dan belum ada akun Kids, kita tambahkan manual.
-if (CURRENT_PLAN === 'family') {
+// Cek apakah paket mengandung kata "family" (biar aman jika datanya "Family Plan" dll)
+if (CURRENT_PLAN.includes('family')) {
   // Cek apakah sudah ada akun Kids biar tidak duplikat
   const hasKids = profiles.some(p => p.name === 'Kids');
   if (!hasKids) {
@@ -47,7 +57,9 @@ function renderProfiles() {
   if (!container) return; // Error safety
 
   container.innerHTML = ''; 
-  const maxLimit = PLAN_LIMITS[CURRENT_PLAN];
+  
+  // Ambil batas kuota berdasarkan paket. Jika paket tidak dikenali, default 1.
+  const maxLimit = PLAN_LIMITS[CURRENT_PLAN] || 1;
 
   // Logika Layout: Tengah untuk Individual, Grid untuk Duo/Family
   if (CURRENT_PLAN === 'individual') {
@@ -83,7 +95,6 @@ function renderProfiles() {
   });
 
   // 2. Render Tombol Add (+) jika kuota belum penuh
-  // Logic: Jika bukan paket individual DAN jumlah profil masih di bawah batas
   if (CURRENT_PLAN !== 'individual' && profiles.length < maxLimit) {
     const addBtnHTML = `
       <div class="flex flex-col items-center group cursor-pointer" onclick="openModal()">
@@ -99,24 +110,17 @@ function renderProfiles() {
   }
 }
 
-// --- NAVIGASI LOGIN (PENTING!) ---
+// --- NAVIGASI LOGIN ---
 function selectProfile(name, isKids) {
   console.log(`Login attempt: ${name} | Kids Mode: ${isKids}`);
   
-  // 1. Simpan data user yang aktif ke LocalStorage
   localStorage.setItem('activeProfile', name);
-  
-  // 2. Simpan Status KIDS MODE
-  // Gunakan string 'true' atau 'false' agar mudah dibaca nanti
   localStorage.setItem('isKidsMode', isKids); 
 
-  // 3. Efek Visual Transisi Keluar
   document.body.style.opacity = '0';
   document.body.style.transition = 'opacity 0.4s ease-in-out';
   
-  // 4. Redirect ke Dashboard setelah animasi selesai
   setTimeout(() => {
-    // Pastikan file dashboard.html ada di folder yang sejajar dengan whos-watching.html
     window.location.href = 'dashboard.html'; 
   }, 400);
 }
@@ -128,7 +132,6 @@ const inputName = document.getElementById('newProfileName');
 function openModal() {
   modal.classList.remove('hidden');
   inputName.value = '';
-  // Fokus otomatis ke input field agar user bisa langsung ketik
   setTimeout(() => inputName.focus(), 100);
 }
 
@@ -139,50 +142,41 @@ function closeModal() {
 function saveNewProfile() {
   const name = inputName.value.trim();
   
-  // Validasi: Nama tidak boleh kosong
   if (!name) {
     alert("Please enter a name");
     return;
   }
 
-  // Validasi: Cegah penggunaan nama 'Kids' manual
+  // Validasi Nama Kids & Duplikat
   if (name.toLowerCase() === 'kids') {
-    alert("Nama 'Kids' sudah dipesan untuk profil khusus anak!");
+    alert("Nama 'Kids' sudah dipesan!");
     return;
   }
-
-  // Validasi: Cek nama duplikat
   const isDuplicate = profiles.some(p => p.name.toLowerCase() === name.toLowerCase());
   if (isDuplicate) {
-    alert("Nama profil ini sudah ada!");
+    alert("Nama sudah ada!");
     return;
   }
 
-  // Pilih warna acak dari palet
   const randomColor = colorPalette[Math.floor(Math.random() * colorPalette.length)];
 
-  // Tambahkan ke array profiles
   profiles.push({
     id: Date.now(),
     name: name,
     color: randomColor,
-    isKids: false // Profil buatan user selalu dianggap DEWASA
+    isKids: false 
   });
 
   closeModal();
-  renderProfiles(); // Render ulang tampilan
+  renderProfiles();
 }
 
-// Event Listeners
 modal.addEventListener('click', (e) => {
-  // Menutup modal jika user klik di area gelap (background)
   if (e.target === modal) closeModal();
 });
 
 inputName.addEventListener('keypress', (e) => {
-  // Simpan jika user tekan Enter
   if (e.key === 'Enter') saveNewProfile();
 });
 
-// Jalankan render saat halaman selesai dimuat
 document.addEventListener('DOMContentLoaded', renderProfiles);
