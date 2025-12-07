@@ -35,6 +35,6 @@ function submitSelection() {
   console.log("Genre terpilih:", selectedGenres);
   
   // Arahkan ke halaman selanjutnya
-  // Sesuaikan nama file tujuanmu di sini:
-  window.location.href = 'dashboard.html'; 
+  // ke dashboard (index.html)
+  window.location.href = 'index.html'; 
 }

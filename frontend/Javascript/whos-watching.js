@@ -8,7 +8,7 @@ const CURRENT_PLAN = 'family';
 const PLAN_LIMITS = {
   'individual': 1,
   'duo': 2,
-  'family': 10
+  'family': 5
 };
 
 // Data Dummy Awal
