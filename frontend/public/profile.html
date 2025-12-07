@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile - Meovving</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Anton+SC&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    .font-anton { font-family: 'Anton SC', sans-serif; }
+    .font-poppins { font-family: 'Poppins', sans-serif; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none;  scrollbar-width: none; }
+  </style>
+</head>
+<body class="bg-black text-white font-poppins min-h-screen">
+
+  <div class="max-w-md mx-auto min-h-screen relative bg-black flex flex-col">
+    
+    <div class="flex justify-between items-center px-6 pt-8 pb-4 relative z-10">
+      <h1 class="text-2xl text-[#CC361E] font-anton tracking-wider" id="pageTitle">MEOWING</h1>
+      <button id="mainBackBtn" onclick="goBack()" class="text-white text-2xl hover:text-gray-300">✕</button>
+      
+      <button id="pinBackBtn" onclick="closePinMode()" class="hidden text-white text-lg absolute left-6 flex items-center gap-2">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      </button>
+    </div>
+
+    <div id="viewMode" class="flex-grow flex flex-col px-6 pb-10 transition-opacity duration-300">
+      
+      <div class="flex flex-col items-center mt-4 mb-8">
+        <div class="w-28 h-28 rounded-full bg-blue-500 mb-4 shadow-lg flex items-center justify-center text-4xl font-bold font-anton select-none" id="avatarInitial">M</div>
+        <h2 id="displayName" class="text-xl font-semibold mb-1">Loading...</h2>
+        <span class="text-green-500 text-sm font-medium mb-3">Joined 2023</span>
+        
+        <button onclick="openEditMode()" class="text-gray-400 text-sm border border-gray-600 px-4 py-1 rounded-full hover:border-white hover:text-white transition">
+          Edit Profile
+        </button>
+      </div>
+
+      <div class="space-y-8 mb-10">
+        <div>
+          <h3 class="text-lg font-semibold mb-3">Recently Viewed</h3>
+          <div class="flex overflow-x-auto gap-4 no-scrollbar" id="recentContainer"></div>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-3">Favorite Movies</h3>
+          <div class="flex overflow-x-auto gap-4 no-scrollbar" id="favoriteContainer"></div>
+        </div>
+        <div>
+          <h3 class="text-lg font-semibold mb-3">Watchlist</h3>
+          <div class="flex overflow-x-auto gap-4 no-scrollbar" id="watchlistContainer"></div>
+        </div>
+      </div>
+
+      <div class="mt-auto">
+        <button onclick="goToDashboard()" class="w-full bg-[#CC361E] py-3 rounded-xl font-semibold shadow-lg shadow-red-900/20 active:scale-95 transition-transform">
+          Go To TMDB Dashboard
+        </button>
+      </div>
+    </div>
+
+
+    <div id="editMode" class="hidden flex-grow flex flex-col px-6 pb-10 transition-opacity duration-300">
+      
+      <div class="flex flex-col items-center mt-10 mb-10">
+        <div class="w-32 h-32 rounded-full bg-blue-500 mb-4 shadow-xl flex items-center justify-center text-5xl font-bold font-anton select-none relative group cursor-pointer">
+           <span id="editAvatarInitial">M</span>
+           <div class="absolute inset-0 bg-black/40 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+             <span class="text-xs">Change</span>
+           </div>
+        </div>
+        <span class="text-gray-400 text-sm">Change Photo</span>
+      </div>
+
+      <div class="space-y-6">
+        <div>
+          <label class="block text-gray-500 text-xs uppercase tracking-wider mb-1">Profile Name</label>
+          <input type="text" id="editNameInput" class="w-full bg-transparent border-b border-gray-700 py-2 text-lg focus:outline-none focus:border-[#CC361E] transition-colors" value="">
+        </div>
+
+        <div onclick="openPinMode()" class="flex justify-between items-center py-4 border-b border-gray-700 cursor-pointer hover:bg-white/5 px-2 -mx-2 rounded transition">
+          <span class="text-lg text-white">Change Pin</span>
+          <span class="text-gray-500 text-2xl">›</span>
+        </div>
+      </div>
+
+      <div class="mt-auto pt-10">
+        <button onclick="saveProfile()" class="w-full bg-[#CC361E] py-3 rounded-xl font-semibold shadow-lg shadow-red-900/20 active:scale-95 transition-transform">
+          Save Changes
+        </button>
+      </div>
+    </div>
+
+
+    <div id="pinMode" class="hidden fixed inset-0 bg-black z-50 flex flex-col px-8">
+      <div class="flex-grow flex flex-col justify-center items-center text-center mt-[-60px]"> <h3 class="text-white text-lg font-medium mb-1">Enter a new PIN. Make sure you</h3>
+        <h3 class="text-white text-lg font-medium mb-12">remember it!</h3>
+
+        <input type="password" id="newPinInput" maxlength="8" placeholder="" 
+          class="w-40 bg-transparent border-b border-gray-600 text-center text-3xl tracking-[0.5em] text-white focus:outline-none focus:border-[#CC361E] py-2 mb-12 placeholder-gray-700">
+
+        <button onclick="saveNewPin()" class="w-full bg-[#CC361E] py-3 rounded-full font-bold text-lg shadow-lg shadow-red-900/20 active:scale-95 transition-transform">
+          Save
+        </button>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script src="../javascript/profile.js"></script> 
+</body>
+</html>

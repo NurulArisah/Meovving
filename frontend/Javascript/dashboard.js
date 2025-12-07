@@ -269,7 +269,7 @@ function renderDashboard(data, isKids) {
   // 1. TRENDING 10 (Angka Besar)
   const trendingSection = `
     <div class="flex flex-col gap-4 animate-fade-in">
-      <h2 class="text-white text-lg font-semibold px-6 border-l-4 border-brand ml-6">Trending 10 Now</h2>
+      <h2 class="text-white text-lg font-semibold px-6 border-l-4 border-brand ml-6">Popular Movie</h2>
       <div class="flex overflow-x-auto overflow-y-hidden gap-10 px-8 pb-10 pt-4 scrollbar-hide items-end h-auto w-full snap-x">
         ${data.trending.map((movie, index) => `
           <div class="relative flex-shrink-0 w-[140px] cursor-pointer group snap-center" 
@@ -298,7 +298,7 @@ function renderDashboard(data, isKids) {
 
   // 4. DRAKOR
   if (data.drakor && data.drakor.length > 0) {
-    container.innerHTML += createSectionHTML("Korean Drama (Drakor)", data.drakor);
+    container.innerHTML += createSectionHTML("Korea", data.drakor);
   }
 }
 
