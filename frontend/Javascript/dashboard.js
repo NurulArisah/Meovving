@@ -1,6 +1,6 @@
 // Lokasi: frontend/javascript/dashboard.js
 
-// --- 1. DATA DUMMY (ADULT CONTENT - TOP 10 TRENDING) ---
+// --- 1. DATA DUMMY (ADULT CONTENT - TOP 10 TRENDING) 
 const ADULT_CONTENT = {
   trending: [
     { title: "Stranger Things", image: "https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg" },
@@ -24,7 +24,7 @@ const ADULT_CONTENT = {
   ]
 };
 
-// --- DATA DUMMY (KIDS CONTENT) ---
+// --- DATA DUMMY (KIDS CONTENT 10 ITEMS) 
 const KIDS_CONTENT = {
   trending: [
     { title: "Super Mario Bros", image: "https://image.tmdb.org/t/p/w500/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg" },
@@ -32,11 +32,17 @@ const KIDS_CONTENT = {
     { title: "Zootopia 2", image: "https://image.tmdb.org/t/p/w500/3Wg1LBCiTEXTxRrkNKOqJyyIFyF.jpg" },
     { title: "Encanto", image: "https://image.tmdb.org/t/p/w500/4j0PNHkMr5ax3IA8tjtxcmPU3QT.jpg" },
     { title: "Sing 2", image: "https://image.tmdb.org/t/p/w500/aWeKITRFbbwY8txG5uCj4rMCfSP.jpg" },
+    // Tambahan 5 film baru agar jadi 10
+    { title: "Frozen II", image: "https://image.tmdb.org/t/p/w500/mINJaa34MtknCYl5A41xIK16bD8.jpg" },
+    { title: "Moana", image: "https://image.tmdb.org/t/p/w500/4YZkIvzf.jpg" }, // Menggunakan placeholder Moana 2/1
+    { title: "Kung Fu Panda 4", image: "https://image.tmdb.org/t/p/w500/kDp1vUBnMpe8ak4rjgl3cLELqjU.jpg" },
+    { title: "Inside Out", image: "https://image.tmdb.org/t/p/w500/lRHE0vzf3oYJrhbsHXjIkF4y53E.jpg" },
+    { title: "Despicable Me 3", image: "https://image.tmdb.org/t/p/w500/6t3cGoVx8tC7W7QvLdDq8I8yNq3.jpg" },
   ],
   topRating: [
     { title: "Coco", rating: 9.8, image: "https://image.tmdb.org/t/p/w500/gGEsBPAijhVUFoiNpgZXqRVWJt2.jpg" },
     { title: "Toy Story", rating: 9.7, image: "https://image.tmdb.org/t/p/w500/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg" },
-    { title: "Inside Out", rating: 9.6, image: "https://image.tmdb.org/t/p/w500/lRHE0vzf3oYJrhbsHXjIkF4y53E.jpg" },
+    { title: "Inside Out 2", rating: 9.6, image: "https://image.tmdb.org/t/p/w500/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg" },
     { title: "Up", rating: 9.5, image: "https://image.tmdb.org/t/p/w500/vpbaStTMt8qqXaEgnOR2EE4DNJk.jpg" },
     { title: "Lion King", rating: 9.4, image: "https://image.tmdb.org/t/p/w500/sKCr78MXSLixwmZ8DyJLrpMsd15.jpg" },
   ]
