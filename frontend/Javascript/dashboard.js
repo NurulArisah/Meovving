@@ -1,6 +1,15 @@
 // Lokasi: frontend/javascript/dashboard.js
 
-// --- DATA FILM DUMMY (TIDAK DIUBAH) ---
+const isKids = localStorage.getItem('isKidsMode') === 'true';
+
+if (isKids) {
+   console.log("Mode Anak Aktif: Filter film 18+");
+   // Sembunyikan film horror / thriller
+} else {
+   console.log("Mode Dewasa: Tampilkan semua");
+}
+
+// --- 1. DATA DUMMY (ADULT) ---
 const ADULT_CONTENT = {
   trending: [
     { title: "Stranger Things", image: "https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg", rating: "8.6" },
@@ -21,9 +30,28 @@ const ADULT_CONTENT = {
     { title: "Pulp Fiction", rating: 8.9, image: "https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg" },
     { title: "Interstellar", rating: 8.7, image: "https://image.tmdb.org/t/p/w500/gEU2QniL6C8z1BHu8sqQjsuw0nw.jpg" },
     { title: "Fight Club", rating: 8.4, image: "https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7Qf4n6a87u0.jpg" },
+  ],
+  anime: [
+    { title: "One Piece", rating: 8.9, image: "https://image.tmdb.org/t/p/w500/cMD9Ygz11yjJNZ1lFBTNn30DNWQ.jpg" },
+    { title: "Demon Slayer", rating: 8.7, image: "https://image.tmdb.org/t/p/w500/xUfRZu2mi8jH6SzQEYdB9authIx.jpg" },
+    { title: "Jujutsu Kaisen", rating: 8.6, image: "https://image.tmdb.org/t/p/w500/hD8yEwdAwLjCWOgF9VtpO0wlo28.jpg" },
+    { title: "Attack on Titan", rating: 9.0, image: "https://image.tmdb.org/t/p/w500/hTP1DtLGFamjfu8WqjnuQdP1n4i.jpg" },
+    { title: "Spy x Family", rating: 8.5, image: "https://image.tmdb.org/t/p/w500/3r4LYFuXGw36ai2K8mnxQnB5nNR.jpg" },
+    { title: "Naruto Shippuden", rating: 8.6, image: "https://image.tmdb.org/t/p/w500/zAYRe2bJxpWTVrwwmBc00VFkAf4.jpg" },
+    { title: "Chainsaw Man", rating: 8.4, image: "https://image.tmdb.org/t/p/w500/npdB6eFzizki0WaZ1OvKcJrWe97.jpg" },
+  ],
+  drakor: [
+    { title: "Queen of Tears", rating: 8.8, image: "https://image.tmdb.org/t/p/w500/a3IePLf348450YJ10e82D4jP6f.jpg" }, 
+    { title: "The Glory", rating: 8.9, image: "https://image.tmdb.org/t/p/w500/6jI4yYtMOLjY3ib5dC3k2mN6P5g.jpg" },
+    { title: "All of Us Are Dead", rating: 8.5, image: "https://image.tmdb.org/t/p/w500/pTEFqAjLdnhBVjS5tScG1jWskGb.jpg" },
+    { title: "Vincenzo", rating: 8.8, image: "https://image.tmdb.org/t/p/w500/dvXJgEDVxWWKp95h8N1T8tqD3N2.jpg" },
+    { title: "Moving", rating: 8.9, image: "https://image.tmdb.org/t/p/w500/vf54116vVb5E8i2LzD1aI9dG6w.jpg" }, 
+    { title: "Sweet Home", rating: 8.3, image: "https://image.tmdb.org/t/p/w500/u8d8w15y5a5V5x5G5a5F5a5h5.jpg" }, 
+    { title: "Reply 1988", rating: 9.0, image: "https://image.tmdb.org/t/p/w500/2q2iY8u8G6f8y8G8.jpg" }, 
   ]
 };
 
+// --- DATA DUMMY (KIDS) ---
 const KIDS_CONTENT = {
   trending: [
     { title: "Super Mario Bros", image: "https://image.tmdb.org/t/p/w500/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg", rating: "7.8" },
@@ -43,6 +71,20 @@ const KIDS_CONTENT = {
     { title: "Inside Out 2", rating: 9.6, image: "https://image.tmdb.org/t/p/w500/vpnVM9B6NMmQpWeZvzLvDESb2QY.jpg" },
     { title: "Up", rating: 9.5, image: "https://image.tmdb.org/t/p/w500/vpbaStTMt8qqXaEgnOR2EE4DNJk.jpg" },
     { title: "Lion King", rating: 9.4, image: "https://image.tmdb.org/t/p/w500/sKCr78MXSLixwmZ8DyJLrpMsd15.jpg" },
+  ],
+  anime: [
+    { title: "Pokemon", rating: 8.0, image: "https://image.tmdb.org/t/p/w500/rS5l5i30Nl3rZ195yUj8YhX6d.jpg" },
+    { title: "Doraemon", rating: 8.2, image: "https://image.tmdb.org/t/p/w500/3k7g0iW1H5g1.jpg" }, // Placeholder
+    { title: "Digimon", rating: 7.9, image: "https://image.tmdb.org/t/p/w500/wlQ3d2W3h7.jpg" }, // Placeholder
+    { title: "Dragon Ball", rating: 8.5, image: "https://image.tmdb.org/t/p/w500/tZ0j3.jpg" }, // Placeholder
+    { title: "Beyblade", rating: 7.0, image: "https://image.tmdb.org/t/p/w500/kZ0.jpg" } // Placeholder
+  ],
+  drakor: [
+    { title: "Pororo", rating: 8.5, image: "https://image.tmdb.org/t/p/w500/k0.jpg" }, // Placeholder Kids Korean
+    { title: "Tayo the Little Bus", rating: 8.2, image: "https://image.tmdb.org/t/p/w500/k1.jpg" },
+    { title: "Robocar Poli", rating: 7.9, image: "https://image.tmdb.org/t/p/w500/k2.jpg" },
+    { title: "Larva", rating: 8.0, image: "https://image.tmdb.org/t/p/w500/k3.jpg" },
+    { title: "Super Wings", rating: 7.5, image: "https://image.tmdb.org/t/p/w500/k4.jpg" }
   ]
 };
 
@@ -61,6 +103,9 @@ let IS_KIDS_MODE = false;
 
 document.addEventListener('DOMContentLoaded', () => {
   IS_KIDS_MODE = localStorage.getItem('isKidsMode') === 'true';
+  const activeUser = localStorage.getItem('activeProfile') || 'User';
+  console.log(`Dashboard Loaded. User: ${activeUser}, Kids Mode: ${IS_KIDS_MODE}`);
+  
   CURRENT_ACTIVE_DATA = IS_KIDS_MODE ? KIDS_CONTENT : ADULT_CONTENT;
   
   // Render Dashboard
@@ -73,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
   setupFilterButtons();
 });
 
-// --- NEW SEARCH LOGIC (OVERLAY STYLE) ---
+// --- SEARCH LOGIC (OVERLAY STYLE) ---
 
 function openSearchOverlay() {
     const overlay = document.getElementById('searchOverlay');
@@ -159,7 +204,6 @@ function toggleFilterSection() {
     const resultSec = document.getElementById('overlaySearchResults');
     const input = document.getElementById('overlaySearchInput');
 
-    // Kosongkan input biar tidak bingung
     input.value = '';
     
     if (filterSec.classList.contains('hidden')) {
@@ -186,7 +230,7 @@ function applyFilter() {
     toggleFilterSection();
 }
 
-// --- LOGIKA DASHBOARD (TIDAK BERUBAH) ---
+// --- UI HELPERS ---
 
 function resetDashboard() {
     window.location.reload();
@@ -217,11 +261,12 @@ function closeModalDirect() {
     setTimeout(() => { modal.classList.remove('flex'); modal.classList.add('hidden'); }, 300);
 }
 
+// --- RENDER UTAMA ---
 function renderDashboard(data, isKids) {
   const container = document.getElementById('mainContent');
   container.innerHTML = ''; 
 
-  // TRENDING (ANGKA DI DEPAN + SHADOW)
+  // 1. TRENDING 10 (Angka Besar)
   const trendingSection = `
     <div class="flex flex-col gap-4 animate-fade-in">
       <h2 class="text-white text-lg font-semibold px-6 border-l-4 border-brand ml-6">Trending 10 Now</h2>
@@ -229,9 +274,11 @@ function renderDashboard(data, isKids) {
         ${data.trending.map((movie, index) => `
           <div class="relative flex-shrink-0 w-[140px] cursor-pointer group snap-center" 
                onclick="openModal('${movie.title.replace(/'/g, "\\'")}', '${movie.rating || 'N/A'}', '${movie.image}')">
+            
             <h1 class="absolute -bottom-6 -left-8 text-[120px] font-anton leading-none z-20 pointer-events-none text-outline-shadow select-none drop-shadow-md">
               ${index + 1}
             </h1>
+
             <img src="${movie.image}" alt="${movie.title}" class="w-full h-[210px] object-cover rounded-xl shadow-lg border border-transparent group-hover:border-gray-500 relative z-10">
           </div>
         `).join('')}
@@ -241,11 +288,17 @@ function renderDashboard(data, isKids) {
   `;
   container.innerHTML += trendingSection;
 
+  // 2. TOP RATING
   container.innerHTML += createSectionHTML("Top Rating", data.topRating);
-  container.innerHTML += createSectionHTML("Popular Movies", [...data.trending].reverse());
-  
-  if (!isKids) {
-    container.innerHTML += createSectionHTML("Top Series", ADULT_CONTENT.topRating); 
+
+  // 3. ANIME
+  if (data.anime && data.anime.length > 0) {
+    container.innerHTML += createSectionHTML("Anime", data.anime);
+  }
+
+  // 4. DRAKOR
+  if (data.drakor && data.drakor.length > 0) {
+    container.innerHTML += createSectionHTML("Korean Drama (Drakor)", data.drakor);
   }
 }
 
