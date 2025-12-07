@@ -36,5 +36,5 @@ function submitSelection() {
   
   // Arahkan ke halaman selanjutnya
   // ke dashboard (index.html)
-  window.location.href = 'index.html'; 
+  window.location.href = 'whos-watching.html'; 
 }

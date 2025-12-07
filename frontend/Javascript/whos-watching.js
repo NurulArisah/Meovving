@@ -13,7 +13,7 @@ const PLAN_LIMITS = {
 
 // Data Dummy Awal
 let profiles = [
-  { id: 1, name: 'Brr Patapim', color: 'bg-blue-700', isKids: false }
+  { id: 1, name: 'Me', color: 'bg-blue-700', isKids: false }
 ];
 
 // --- LOGIKA KHUSUS FAMILY: AUTO ADD KIDS PROFILE ---
