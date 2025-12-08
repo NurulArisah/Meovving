@@ -1,15 +1,13 @@
-
 console.log("PACKAGE.JS LOADED");
 
 // Ambil semua link paket
 const packageLinks = document.querySelectorAll("a[data-plan]");
-console.log("Jumlah link terbaca:", packageLinks.length);
 
 packageLinks.forEach(link => {
   link.addEventListener("click", (e) => {
-   e.preventDefault(); // cegah pindah halaman dulu
+    e.preventDefault(); // cegah pindah halaman default
 
-    // Ambil data dari atribut
+    // Ambil data dari atribut HTML
     const planName = link.dataset.plan;
     const planPrice = link.dataset.price;
 
@@ -19,10 +17,7 @@ packageLinks.forEach(link => {
 
     console.log("SIMPAN:", planName, planPrice);
 
-    // Pindah ke halaman payment method
-//    const target = "payment-method.html";
-//    console.log("redirecting to:", target);
-//    window.location.href = target;
-    window.location.href = link.href;
+    // Pindah langsung ke confirm-payment.html
+    window.location.href = "confirm-payment.html";
   });
 });
