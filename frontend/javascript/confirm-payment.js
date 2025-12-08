@@ -22,14 +22,12 @@ function processPayment() {
     
     // Simulasikan delay sedikit biar terasa "memproses"
     setTimeout(() => {
-        // GANTI URL DI BAWAH INI DENGAN LINK QRIS ASLI KAMU
-        // Contoh: Link Midtrans, Xendit, atau Linkaja
+        // GANTI URL LINK QRIS ASLI
         // const qrisLink = "https://app.midtrans.com/payment-link/...."; 
         
         // KARENA INI DEMO:
-        // Saya akan mengarahkan ke halaman success-payment.html 
-        // seolah-olah user sudah bayar di link QRIS tersebut.
-        // Jika kamu mau benar-benar ke link luar, ganti baris ini:
+        // pergi ke halaman success-payment.html 
+        // seolah-olah user sudah bayar di link QRIStersebut.
         
         window.location.href = "success-payment.html"; 
         

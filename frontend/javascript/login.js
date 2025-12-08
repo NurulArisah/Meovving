@@ -26,14 +26,14 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
         alert("Email atau password salah!");
     }
 
-    // --- TAMBAHAN UNTUK GOOGLE ---
+    //TAMBAHAN UNTUK GOOGLE
     function handleGoogleLogin() {
         // 1. Simpan data dummy seolah-olah user login pakai Google
         // Kita pakai nama akun Google User
         localStorage.setItem('activeUser', 'Google User'); 
         localStorage.setItem('isLoggedIn', 'true');
 
-        // 2. Beri pesan kecil (opsional)
+        // 2. Beri pesan kecil psioonal)
         alert("Login with Google Berhasil! (Simulasi)");
 
         // 3. Arahkan ke Who's Watching

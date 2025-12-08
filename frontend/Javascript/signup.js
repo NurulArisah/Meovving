@@ -39,9 +39,9 @@ async function daftarUser(event) {
         alert("Server tidak merespon. Pastikan Server Go sudah jalan dan Firewall laptop Backend sudah dibuka.");
     }
     
-    // --- TAMBAHAN UNTUK GOOGLE ---
+    //  UNTUK GOOGLE
     function handleGoogleLogin() {
-        // Anggap user setuju mendaftar pakai akun Googlenya
+        // anggap user setuju mendaftar pakai akun Googlenya
         localStorage.setItem('activeUser', 'Google User'); 
         
         // Karena ini signup, biasanya lanjut ke pilih paket dulu
