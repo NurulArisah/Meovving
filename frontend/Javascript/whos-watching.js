@@ -24,7 +24,7 @@ let profiles = [
   { id: 1, name: mainUserName, color: 'bg-blue-700', isKids: false }
 ];
 
-// --- LOGIKA KHUSUS FAMILY: AUTO ADD KIDS PROFILE ---
+// LOGIKA KHUSUS FAMILY: AUTO ADD KIDS PROFILE
 // Cek apakah paket mengandung kata "family" (biar aman jika datanya "Family Plan" dll)
 if (CURRENT_PLAN.includes('family')) {
   // Cek apakah sudah ada akun Kids biar tidak duplikat
@@ -60,7 +60,7 @@ function renderProfiles() {
   if (CURRENT_PLAN === 'individual') {
     container.className = "flex flex-col items-center justify-center w-full animate-fade-in";
   } else {
-    // Grid responsif (2 kolom)
+    // grid responsif (2 kolom)
     container.className = "grid grid-cols-2 gap-x-8 gap-y-10 sm:gap-x-12 sm:gap-y-14 content-center animate-fade-in";
   }
 
