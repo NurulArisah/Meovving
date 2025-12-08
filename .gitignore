@@ -21,3 +21,5 @@ Thumbs.db
 # File sementara
 *.bak
 *.tmp
+
+config.js
