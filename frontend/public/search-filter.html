@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Select Genre - Meovving</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton+SC&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    .font-anton {
+      font-family: 'Anton SC', sans-serif;
+    }
+    /* animasi untuk buttonnya */
+    .genre-btn {
+      transition: all 0.2s ease-in-out;
+    }
+  </style>
+</head>
+
+<body class="relative bg-black text-white min-h-screen flex flex-col items-center justify-center font-[Poppins]">
+
+  <div class="w-full max-w-xs px-4 pb-10">
+    
+    <h1 class="text-3xl font-anton text-[#CC361E] mb-8 text-left">MEOWING</h1>
+
+    <p class="text-white text-xl mb-8 leading-snug">
+      Find movie trend that match your taste!
+    </p>
+
+    <div class="grid grid-cols-2 gap-x-4 gap-y-5 mb-10" id="genreContainer">
+      
+      <button type="button" class="genre-btn bg-[#4C4F54] text-white py-3 rounded-[16px] text-sm font-medium hover:bg-[#5A5E63] shadow-[0_4px_4px_rgba(0,0,0,0.25)]" onclick="toggleGenre(this)">
+        Action
+      </button>
+
+      <button type="button" class="genre-btn bg-[#4C4F54] text-white py-3 rounded-[16px] text-sm font-medium hover:bg-[#5A5E63] shadow-[0_4px_4px_rgba(0,0,0,0.25)]" onclick="toggleGenre(this)">
+        Horror
+      </button>
+
+      <button type="button" class="genre-btn bg-[#4C4F54] text-white py-3 rounded-[16px] text-sm font-medium hover:bg-[#5A5E63] shadow-[0_4px_4px_rgba(0,0,0,0.25)]" onclick="toggleGenre(this)">
+        Comedy
+      </button>
+
+      <button type="button" class="genre-btn bg-[#4C4F54] text-white py-3 rounded-[16px] text-sm font-medium hover:bg-[#5A5E63] shadow-[0_4px_4px_rgba(0,0,0,0.25)]" onclick="toggleGenre(this)">
+        Thriller
+      </button>
+
+      <button type="button" class="genre-btn bg-[#4C4F54] text-white py-3 rounded-[16px] text-sm font-medium hover:bg-[#5A5E63] shadow-[0_4px_4px_rgba(0,0,0,0.25)]" onclick="toggleGenre(this)">
+        Romance
+      </button>
+
+      <button type="button" class="genre-btn bg-[#4C4F54] text-white py-3 rounded-[16px] text-sm font-medium hover:bg-[#5A5E63] shadow-[0_4px_4px_rgba(0,0,0,0.25)]" onclick="toggleGenre(this)">
+        Drama
+      </button>
+
+    </div>
+
+    <button
+      type="button"
+      onclick="submitSelection()"
+      class="bg-[#CC361E] hover:bg-red-700 text-white font-semibold py-3 w-full rounded-[16px] transition shadow-lg mt-20">
+      Next
+    </button>
+
+  </div>
+
+  <script src="../javascript/search-filter.js"></script>
+
+
+</body>
+</html>

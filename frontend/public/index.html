@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meovving</title>
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font Google (Manrope) -->
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600&display=swap" rel="stylesheet">
+</head>
+
+<body class="bg-black text-white h-screen flex flex-col relative font-[Manrope]">
+
+  <!-- Background -->
+  <div class="absolute inset-0">
+    <img src="../assets/images/bg-full.png" 
+         alt="background" 
+         class="w-full h-full object-cover opacity-70" />
+  </div>
+  <!-- END Background -->
+
+  <!-- Logo -->
+  <div class="relative z-10 mt-24 flex justify-center">
+    <img src="../assets/images/logo.png" 
+         alt="logo" 
+         class="w-[250px] sm:w-[270px] md:w-[300px] lg:w-[300px] opacity-100 mt-20 object-contain h-auto drop-shadow-lg " />
+  </div>
+
+  <!-- Spacer -->
+  <div class="flex-grow"></div>
+  
+  <!-- Button -->
+  <div class="relative z-10 flex justify-center mt-8 mb-12">
+    <a href="signup.html"
+       class="px-8 py-5 rounded-xl font-semibold text-[17px] text-white transition"
+       style="background-color: #CC361E;">
+      Start Searching
+    </a>
+  </div>
+
+</body>
+</html>

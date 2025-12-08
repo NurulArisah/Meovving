@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Train to Busan - Detail</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Anton+SC&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { 
+            brand: '#CC361E', 
+            dark: '#0a0a0a',
+            cardRed: '#D93D25' 
+          },
+          fontFamily: { 
+            logo: ['"Anton SC"', 'sans-serif'], 
+            poppins: ['Poppins', 'sans-serif'] 
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .scrollbar-hide::-webkit-scrollbar { display: none; }
+    .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    .mask-gradient { 
+        mask-image: linear-gradient(to bottom, black 60%, transparent 100%);
+        -webkit-mask-image: linear-gradient(to bottom, black 60%, transparent 100%); 
+    }
+  </style>
+</head>
+
+<body class="bg-[#050505] text-white min-h-screen font-poppins pb-10">
+
+  <nav class="flex items-center justify-between px-6 py-6 absolute top-0 w-full z-50">
+    <h1 class="text-3xl font-logo text-brand tracking-wide drop-shadow-md">MEOWING</h1>
+    <button onclick="window.history.back()" class="text-white text-2xl hover:text-brand transition opacity-80 hover:opacity-100">
+       <i class="fas fa-times"></i>
+    </button>
+  </nav>
+
+  <div class="relative w-full h-[55vh]">
+      <img src="https://image.tmdb.org/t/p/w500/3H1WFCuxyNRP35oiL2qqwhAXxc0.jpg" alt="Train to Busan" class="w-full h-full object-cover mask-gradient opacity-90">
+      <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent"></div>
+  </div>
+
+  <div class="px-6 -mt-10 relative z-10 space-y-6">
+
+      <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2">
+             <i class="fas fa-star text-yellow-400 text-2xl"></i>
+             <span class="text-3xl font-bold">9,9</span>
+          </div>
+
+          <div class="flex gap-4">
+              <button onclick="toggleFavorite(this)" class="w-12 h-12 rounded-full bg-brand flex items-center justify-center shadow-lg active:scale-95 transition">
+                  <i id="favIcon" class="far fa-heart text-white text-xl"></i> </button>
+              
+              <button onclick="toggleWatchlist(this)" class="w-12 h-12 rounded-full bg-brand flex items-center justify-center shadow-lg active:scale-95 transition">
+                  <i id="watchIcon" class="far fa-bookmark text-white text-xl"></i> </button>
+          </div>
+      </div>
+
+      <div>
+          <h1 class="text-3xl font-bold mb-2">Train to Busan (2016)</h1>
+          <div class="flex items-center gap-3 text-gray-400 text-sm">
+              <div class="w-6 h-6 rounded-full border border-gray-400 flex items-center justify-center text-[10px] font-medium">15</div>
+              <span>Horror, Thriller, Action, Adventure</span>
+          </div>
+      </div>
+
+      <div>
+          <h3 class="font-bold text-lg mb-1">Deskripsi</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">
+              When a zombie virus pushes Korea into a state of emergency, those trapped on an express train to Busan must fight for their own survival.
+          </p>
+      </div>
+
+      <div>
+          <h3 class="font-bold text-lg mb-1">Language</h3>
+          <p class="text-gray-400 text-sm">Korean</p>
+      </div>
+
+      <div>
+          <h3 class="font-bold text-lg mb-3">Cast</h3>
+          <div class="grid grid-cols-2 gap-4">
+              <div class="bg-cardRed rounded-xl p-2 flex items-center gap-3 shadow-md">
+                  <img src="https://image.tmdb.org/t/p/w200/6Lp4X8w4wXNqjZp6Y4z5w4w4w4.jpg" class="w-10 h-10 rounded-full object-cover bg-gray-300">
+                  <div class="leading-tight">
+                      <p class="text-white text-sm font-bold">Gong Yoo</p>
+                      <p class="text-white/70 text-[10px]">Seok-woo</p>
+                  </div>
+              </div>
+              <div class="bg-cardRed rounded-xl p-2 flex items-center gap-3 shadow-md">
+                  <img src="https://image.tmdb.org/t/p/w200/q7dY1w2z3x4c5v6b7n8m9.jpg" class="w-10 h-10 rounded-full object-cover bg-gray-300">
+                  <div class="leading-tight">
+                      <p class="text-white text-sm font-bold">Kim Su-an</p>
+                      <p class="text-white/70 text-[10px]">Soo-ahn</p>
+                  </div>
+              </div>
+              <div class="bg-cardRed rounded-xl p-2 flex items-center gap-3 shadow-md">
+                  <img src="https://image.tmdb.org/t/p/w200/1R2s5k7n1J2u7u2z7w3w4w5w6.jpg" class="w-10 h-10 rounded-full object-cover bg-gray-300">
+                  <div class="leading-tight">
+                      <p class="text-white text-sm font-bold">Jung Yu-mi</p>
+                      <p class="text-white/70 text-[10px]">Sung-gyeong</p>
+                  </div>
+              </div>
+              <div class="bg-cardRed rounded-xl p-2 flex items-center gap-3 shadow-md">
+                  <img src="https://image.tmdb.org/t/p/w200/hP5qJjsyG6830U6569O7Eiw0Yc7.jpg" class="w-10 h-10 rounded-full object-cover bg-gray-300">
+                  <div class="leading-tight">
+                      <p class="text-white text-sm font-bold">Don Lee</p>
+                      <p class="text-white/70 text-[10px]">Sang-hwa</p>
+                  </div>
+              </div>
+              <div class="bg-cardRed rounded-xl p-2 flex items-center gap-3 shadow-md">
+                  <img src="https://image.tmdb.org/t/p/w200/lJ72h1X8d09Rj7A7X8j9.jpg" class="w-10 h-10 rounded-full object-cover bg-gray-300">
+                  <div class="leading-tight">
+                      <p class="text-white text-sm font-bold">Choi Woo-shik</p>
+                      <p class="text-white/70 text-[10px]">Yeong-gook</p>
+                  </div>
+              </div>
+              <div class="bg-cardRed rounded-xl p-2 flex items-center gap-3 shadow-md">
+                  <img src="https://image.tmdb.org/t/p/w200/4.jpg" class="w-10 h-10 rounded-full object-cover bg-gray-300">
+                  <div class="leading-tight">
+                      <p class="text-white text-sm font-bold">An So-hee</p>
+                      <p class="text-white/70 text-[10px]">Jin-hee</p>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <div class="pb-10 pt-4">
+          <h3 class="font-bold text-lg mb-2 flex items-center gap-2">
+              Watch On 
+              <img src="https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg" class="h-6">
+          </h3>
+      </div>
+  </div>
+
+  <script>
+      // DATA FILM (STATIS UNTUK SEMENTARA)
+      const movieData = {
+          id: 'train-to-busan',
+          title: 'Train to Busan',
+          image: 'https://image.tmdb.org/t/p/w500/3H1WFCuxyNRP35oiL2qqwhAXxc0.jpg',
+          rating: '9.9'
+      };
+
+      // CEK STATUS SAAT LOAD (Agar icon tetap solid jika sudah di-save)
+      document.addEventListener('DOMContentLoaded', () => {
+          checkStatus('favorites', 'favIcon');
+          checkStatus('watchlist', 'watchIcon');
+      });
+
+      function checkStatus(key, iconId) {
+          const list = JSON.parse(localStorage.getItem(key)) || [];
+          const exists = list.some(m => m.id === movieData.id);
+          const icon = document.getElementById(iconId);
+          
+          if (exists) {
+              icon.classList.remove('far'); // Hapus outline
+              icon.classList.add('fas'); // Tambah solid (penuh)
+          }
+      }
+
+      // TOGGLE FAVORITE
+      function toggleFavorite(btn) {
+          const icon = document.getElementById('favIcon');
+          let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+          const index = favorites.findIndex(m => m.id === movieData.id);
+
+          if (index === -1) {
+              // Simpan
+              favorites.push(movieData);
+              localStorage.setItem('favorites', JSON.stringify(favorites));
+              icon.classList.remove('far');
+              icon.classList.add('fas');
+          } else {
+              // Hapus
+              favorites.splice(index, 1);
+              localStorage.setItem('favorites', JSON.stringify(favorites));
+              icon.classList.remove('fas');
+              icon.classList.add('far');
+          }
+      }
+
+      // TOGGLE WATCHLIST
+      function toggleWatchlist(btn) {
+          const icon = document.getElementById('watchIcon');
+          let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+          const index = watchlist.findIndex(m => m.id === movieData.id);
+
+          if (index === -1) {
+              watchlist.push(movieData);
+              localStorage.setItem('watchlist', JSON.stringify(watchlist));
+              icon.classList.remove('far');
+              icon.classList.add('fas');
+          } else {
+              watchlist.splice(index, 1);
+              localStorage.setItem('watchlist', JSON.stringify(watchlist));
+              icon.classList.remove('fas');
+              icon.classList.add('far');
+          }
+      }
+  </script>
+</body>
+</html>
