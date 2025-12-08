@@ -17,7 +17,6 @@ const PLAN_LIMITS = {
   'individual': 1,
   'duo': 2,
   'family': 5,
-  'premium': 5 // jaga-jaga nama paketnya 'premium' tapi fiturnya sama kayak family
 };
 
 // Data profil awal (Otomatis menggunakan nama user utama)
