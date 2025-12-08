@@ -1,178 +1,153 @@
-// Lokasi: frontend/javascript/whos-watching.js
+// ==========================================
+// 1. CONFIG & GLOBAL STATE
+// ==========================================
+const API_BASE_URL = "http://localhost:8080/api/v1/premium";
+const token = localStorage.getItem('firebaseToken');
+ 
 
-// AMBIL DATA DINAMIS DARI LOCAL STORAGE
-
-// Ambil paket yang dipilih dari halaman Package
-// Jika tidak ada data (misal langsung login), default ke 'individual'
+// Ambil Plan untuk batasan jumlah profil
 const storedPlan = localStorage.getItem('selectedPlanName'); 
 const CURRENT_PLAN = storedPlan ? storedPlan.toLowerCase() : 'individual'; 
-
-// Ambil username dari halaman Login/Signup
-// JIKA tidak ada data, default ke 'Me'
-const mainUserName = localStorage.getItem('activeUser') || 'Me'; 
-
-// ==========================================
 
 const PLAN_LIMITS = {
   'individual': 1,
   'duo': 2,
   'family': 5,
-  'premium': 5 // jaga-jaga nama paketnya 'premium' tapi fiturnya sama kayak family
 };
 
-// Data profil awal (Otomatis menggunakan nama user utama)
-let profiles = [
-  { id: 1, name: mainUserName, color: 'bg-blue-700', isKids: false }
-];
+let profiles = []; // State data dari Firestore
 
-// --- LOGIKA KHUSUS FAMILY: AUTO ADD KIDS PROFILE ---
-// Cek apakah paket mengandung kata "family" (biar aman jika datanya "Family Plan" dll)
-if (CURRENT_PLAN.includes('family')) {
-  // Cek apakah sudah ada akun Kids biar tidak duplikat
-  const hasKids = profiles.some(p => p.name === 'Kids');
-  if (!hasKids) {
-    profiles.push({ 
-      id: 999, 
-      name: 'Kids', 
-      color: 'bg-pink-500', // Warna pink khas profil anak
-      isKids: true          // Penanda khusus untuk filtering konten nanti
-    });
-  }
+// ==========================================
+// 2. FETCH DATA DARI BACKEND
+// ==========================================
+
+async function fetchProfiles() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/profiles`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error("Gagal mengambil profil");
+        }
+
+        const data = await response.json();
+
+        // ⬇️ KODE YANG KAMU TANYA MASUK DI SINI
+        profiles = data.profiles.map(p => ({
+            id: p.profile_id,
+            name: p.profile_name || 'User',
+            isKids: p.is_kids_account,
+            color: p.is_kids_account ? 'bg-pink-500' : 'bg-blue-700'
+        }));
+
+        updateUI();
+
+    } catch (error) {
+        console.error("Error mengambil profil:", error);
+    }
 }
 
-// palette warna untuk profil baru (random pick)
-const colorPalette = [
-  'bg-blue-600', 'bg-orange-500', 'bg-pink-600', 
-  'bg-purple-600', 'bg-green-600', 'bg-teal-500',
-  'bg-indigo-600', 'bg-rose-600', 'bg-yellow-600'
-];
+// ==========================================
+// 3. RENDER UI KE HTML (ProfilesContainer)
+// ==========================================
 
-// Fungsi Utama: Merender tampilan profil ke HTML 
 function renderProfiles() {
-  const container = document.getElementById('profilesContainer');
-  if (!container) return; // Error safety
+    const container = document.getElementById('profilesContainer');
+    if (!container) return;
 
-  container.innerHTML = ''; 
-  
-  // Ambil batas kuota berdasarkan paket. Jika paket tidak dikenali, default 1
-  const maxLimit = PLAN_LIMITS[CURRENT_PLAN] || 1;
+    container.innerHTML = ''; 
+    const maxLimit = PLAN_LIMITS[CURRENT_PLAN] || 1;
 
-  // Logika Layout: Tengah untuk Individual, Grid untuk Duo/Family
-  if (CURRENT_PLAN === 'individual') {
-    container.className = "flex flex-col items-center justify-center w-full animate-fade-in";
-  } else {
-    // Grid responsif (2 kolom)
-    container.className = "grid grid-cols-2 gap-x-8 gap-y-10 sm:gap-x-12 sm:gap-y-14 content-center animate-fade-in";
-  }
+    // Menyesuaikan layout grid
+    if (CURRENT_PLAN === 'individual') {
+        container.className = "flex flex-col items-center justify-center w-full animate-fade-in";
+    } else {
+        container.className = "grid grid-cols-2 gap-x-8 gap-y-10 sm:gap-x-12 sm:gap-y-14 content-center animate-fade-in";
+    }
 
-  // 1. Render Kartu Profil User
-  profiles.forEach(profile => {
-    // Menyiapkan nilai boolean untuk dikirim ke fungsi onclick
-    const isKidsValue = profile.isKids ? true : false;
+    profiles.forEach(profile => {
+        const initial = profile.name.charAt(0);
+        const profileHTML = `
+            <div class="flex flex-col items-center group cursor-pointer" onclick="selectProfile('${profile.id}', '${profile.name}', ${profile.isKids})">
+                <div class="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 ${profile.color} rounded-[10px] sm:rounded-[15px] shadow-lg mb-3 group-hover:scale-105 transition-all flex items-center justify-center relative overflow-hidden">
+                    ${profile.isKids ? '<div class="absolute bottom-0 w-full bg-black/20 backdrop-blur-sm text-[10px] text-center py-1 font-bold text-white">KIDS</div>' : ''}
+                    <span class="text-3xl sm:text-4xl font-anton font-bold text-white uppercase select-none">${initial}</span>
+                </div>
+                <span class="text-sm sm:text-base font-medium text-gray-400 group-hover:text-white truncate w-24 sm:w-32 text-center">
+                    ${profile.name}
+                </span>
+            </div>
+        `;
+        container.innerHTML += profileHTML;
+    });
 
-    // Menentukan inisial nama (huruf pertama)
-    const initial = profile.name.charAt(0);
-
-    const profileHTML = `
-      <div class="flex flex-col items-center group cursor-pointer" onclick="selectProfile('${profile.name}', ${isKidsValue})">
-        <div class="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 ${profile.color} rounded-[10px] sm:rounded-[15px] shadow-lg mb-3 group-hover:scale-105 group-hover:ring-4 group-hover:ring-white/80 transition-all duration-300 flex items-center justify-center relative overflow-hidden">
-           
-           ${isKidsValue ? '<div class="absolute bottom-0 w-full bg-black/20 backdrop-blur-sm text-[10px] text-center py-1 font-bold tracking-widest text-white">KIDS</div>' : ''}
-           
-           <span class="text-3xl sm:text-4xl font-bold text-white/90 drop-shadow-md uppercase select-none font-anton">${initial}</span>
-        </div>
-        
-        <span class="text-sm sm:text-base font-medium text-gray-400 group-hover:text-white transition-colors truncate w-24 sm:w-32 text-center">
-          ${profile.name}
-        </span>
-      </div>
-    `;
-    container.innerHTML += profileHTML;
-  });
-
-  // 2. Render Tombol Add (+) jika kuota belum penuh
-  if (CURRENT_PLAN !== 'individual' && profiles.length < maxLimit) {
-    const addBtnHTML = `
-      <div class="flex flex-col items-center group cursor-pointer" onclick="openModal()">
-        <div class="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 bg-transparent border-2 border-[#3A3A3A] hover:border-white rounded-[10px] sm:rounded-[15px] flex items-center justify-center mb-3 group-hover:bg-[#1a1a1a] transition-all duration-300 shadow-sm">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-10 w-10 sm:h-12 sm:w-12 text-gray-500 group-hover:text-white transition-colors">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-          </svg>
-        </div>
-        <span class="text-sm sm:text-base font-medium text-gray-500 group-hover:text-white transition-colors">Add Profile</span>
-      </div>
-    `;
-    container.innerHTML += addBtnHTML;
-  }
+    // Render tombol (+) jika kuota paket belum penuh
+    if (profiles.length < maxLimit) {
+        container.innerHTML += `
+            <div class="flex flex-col items-center group cursor-pointer" onclick="openModal()">
+                <div class="w-24 h-24 sm:w-28 sm:h-28 md:w-32 md:h-32 border-2 border-[#3A3A3A] hover:border-white rounded-[10px] sm:rounded-[15px] flex items-center justify-center mb-3 group-hover:bg-[#1a1a1a] transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-10 w-10 text-gray-500 group-hover:text-white"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+                </div>
+                <span class="text-sm sm:text-base font-medium text-gray-500 group-hover:text-white">Add Profile</span>
+            </div>
+        `;
+    }
 }
 
-// --- NAVIGASI LOGIN ---
-function selectProfile(name, isKids) {
-  console.log(`Login attempt: ${name} | Kids Mode: ${isKids}`);
-  
-  localStorage.setItem('activeProfile', name);
-  localStorage.setItem('isKidsMode', isKids); 
+// ==========================================
+// 4. LOGIKA MODAL & SAVE PROFILE (POST)
+// ==========================================
 
-  document.body.style.opacity = '0';
-  document.body.style.transition = 'opacity 0.4s ease-in-out';
-  
-  setTimeout(() => {
-    window.location.href = 'dashboard.html'; 
-  }, 400);
+async function saveNewProfile() {
+    const inputName = document.getElementById('newProfileName');
+    const name = inputName.value.trim();
+    if (!name) return alert("Masukkan nama!");
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/profiles`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ name: name, is_kids: false, pin: "0000" })
+        });
+
+        if (response.ok) {
+            closeModal();
+            fetchProfiles(); // Refresh Firestore data
+        } else {
+            const err = await response.json();
+            alert(err.error || "Gagal simpan");
+        }
+    } catch (error) {
+        console.error("Error Save:", error);
+    }
 }
 
-// --- LOGIKA MODAL (POPUP) ---
-const modal = document.getElementById('addProfileModal');
-const inputName = document.getElementById('newProfileName');
+// ==========================================
+// 5. SELECT PROFILE & REDIRECT
+// ==========================================
 
-function openModal() {
-  modal.classList.remove('hidden');
-  inputName.value = '';
-  setTimeout(() => inputName.focus(), 100);
+function selectProfile(profileId, name, isKids) {
+    // MENYIMPAN ID PROFIL UNTUK HEADER X-ACTIVE-PROFILE-ID NANTI
+    localStorage.setItem('selected_profile_id', profileId);
+    localStorage.setItem('activeProfile', name);
+    localStorage.setItem('isKidsMode', isKids);
+
+    document.body.style.opacity = '0';
+    setTimeout(() => {
+        window.location.href = 'dashboard.html';
+    }, 400);
 }
 
-function closeModal() {
-  modal.classList.add('hidden');
-}
+// Helper Modal
+function openModal() { document.getElementById('addProfileModal').classList.remove('hidden'); }
+function closeModal() { document.getElementById('addProfileModal').classList.add('hidden'); }
 
-function saveNewProfile() {
-  const name = inputName.value.trim();
-  
-  if (!name) {
-    alert("Please enter a name");
-    return;
-  }
-
-  // Validasi Nama Kids & Duplikat
-  if (name.toLowerCase() === 'kids') {
-    alert("Nama 'Kids' sudah dipesan!");
-    return;
-  }
-  const isDuplicate = profiles.some(p => p.name.toLowerCase() === name.toLowerCase());
-  if (isDuplicate) {
-    alert("Nama sudah ada!");
-    return;
-  }
-
-  const randomColor = colorPalette[Math.floor(Math.random() * colorPalette.length)];
-
-  profiles.push({
-    id: Date.now(),
-    name: name,
-    color: randomColor,
-    isKids: false 
-  });
-
-  closeModal();
-  renderProfiles();
-}
-
-modal.addEventListener('click', (e) => {
-  if (e.target === modal) closeModal();
-});
-
-inputName.addEventListener('keypress', (e) => {
-  if (e.key === 'Enter') saveNewProfile();
-});
-
-document.addEventListener('DOMContentLoaded', renderProfiles);
+// Run
+document.addEventListener('DOMContentLoaded', fetchProfiles);

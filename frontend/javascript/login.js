@@ -1,45 +1,67 @@
-document.getElementById("loginForm").addEventListener("submit", function (e) {
-    e.preventDefault(); // supaya tidak reload halaman default
-
-    // validasi custom di sini
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-
-    // hardcoded akun
-    const correctEmail = "test@mail.com";
-    const correctPassword = "123456";
-
-document.getElementById("loginForm").addEventListener("submit", function (e) {
+document.getElementById("loginForm").addEventListener("submit", async function (e) {
     e.preventDefault(); 
 
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value.trim();
-    const correctEmail = "test@mail.com";
-    const correctPassword = "123456";
+    const apiKey = "AIzaSyBzv6X57J2ANlxxjcpD7BGmmWLHC1ogvO4"; // Firebase API Key
 
-    if (email === correctEmail && password === correctPassword) {
-        // Simpan status login sementara
+    try {
+        // 1. Login ke Firebase langsung untuk mendapatkan ID Token
+        const fbResponse = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                email: email,
+                password: password,
+                returnSecureToken: true
+            })
+        });
+
+        const fbData = await fbResponse.json();
+
+        if (!fbResponse.ok) {
+            throw new Error(fbData.error.message);
+        }
+
+        // 2. Kirim ID Token ke Backend Go untuk divalidasi
+        const goResponse = await fetch("http://localhost:8080/api/v1/auth/login", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id_token: fbData.idToken })
+        });
+
+        // Cek status response backend sebelum parsing JSON
+        if (!goResponse.ok) {
+            const rawError = await goResponse.text(); 
+            console.error("Backend Error Raw:", rawError);
+            throw new Error(`Gagal ke backend Go: ${goResponse.status}`);
+        }
+
+        const goData = await goResponse.json();
+
+        // 3. Jika Sukses ke Backend, Simpan Session & Redirect
+        console.log("Login Sukses Ke Backend:", goData);
         localStorage.setItem('isLoggedIn', 'true');
-        // Arahkan ke Who's Watching dulu, bukan langsung dashboard
-        window.location.href = "whos-watching.html"; 
-    } else {
-        alert("Email atau password salah!");
+        localStorage.setItem('user_uid', goData.uid);
+
+        // PERBAIKAN: Gunakan nama 'firebaseToken' agar sinkron dengan file berikutnya
+        localStorage.setItem('firebaseToken', fbData.idToken); 
+
+        // Arahkan ke Who's Watching
+        window.location.href = "whos-watching.html";
+
+    } catch (error) {
+        console.error("Auth Error:", error);
+        alert("Login Gagal: " + error.message);
     }
 
     //TAMBAHAN UNTUK GOOGLE
     function handleGoogleLogin() {
-        // 1. Simpan data dummy seolah-olah user login pakai Google
-        // Kita pakai nama akun Google User
         localStorage.setItem('activeUser', 'Google User'); 
         localStorage.setItem('isLoggedIn', 'true');
 
         // 2. Beri pesan kecil psioonal)
         alert("Login with Google Berhasil! (Simulasi)");
-
-        // 3. Arahkan ke Who's Watching
         window.location.href = "whos-watching.html";
     }
-
-    
-});   
 });
