@@ -9,7 +9,8 @@ packageLinks.forEach(link => {
 
     // Ambil data dari atribut HTML
     const planName = link.dataset.plan;
-    const planPrice = link.dataset.price;
+    const priceMap = { "Family": 49900, "Duo": 29900, "Individu": 19900 };
+    const planPrice = priceMap[planName];
 
     // Simpan ke localStorage
     localStorage.setItem("selectedPlanName", planName);

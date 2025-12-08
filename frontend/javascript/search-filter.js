@@ -15,14 +15,13 @@ function toggleGenre(button) {
 }
 
 // Fungsi untuk tombol Next
-function submitSelection() {
-  // Ambil semua tombol yang terpilih (yang punya class ring-2)
+async function submitSelection() {
   const selectedGenres = [];
   const buttons = document.querySelectorAll('.genre-btn');
   
   buttons.forEach(btn => {
     if (btn.classList.contains('ring-2')) {
-      selectedGenres.push(btn.innerText);
+      selectedGenres.push(btn.innerText.trim());
     }
   });
 
@@ -31,9 +30,34 @@ function submitSelection() {
     return;
   }
 
-  // Debugging: lihat apa yang dipilih di console
-  console.log("Genre terpilih:", selectedGenres);
-  
-  // Arahkan ke halaman selanjutnya
-  window.location.href = 'whos-watching.html'; 
+  // Tampilkan loading sebentar
+  const nextBtn = document.querySelector('button[onclick="submitSelection()"]');
+  nextBtn.innerText = "Saving...";
+  nextBtn.disabled = true;
+
+  try {
+    const response = await fetch('http://localhost:8080/api/v1/premium/preferences', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}` // Token harus ada!
+      },
+      body: JSON.stringify({ genres: selectedGenres })
+    });
+
+    if (response.ok) {
+      console.log("Genre tersimpan ke DB");
+      window.location.href = 'whos-watching.html'; 
+    } else {
+      const errorData = await response.json();
+      alert("Error saving preferences: " + errorData.error);
+      nextBtn.innerText = "Next";
+      nextBtn.disabled = false;
+    }
+  } catch (err) {
+    console.error("Fetch error:", err);
+    alert("Check connection with Backend.");
+    nextBtn.innerText = "Next";
+    nextBtn.disabled = false;
+  }
 }

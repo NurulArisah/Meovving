@@ -13,6 +13,7 @@ import (
 	"meovving-project-web-fiks/models"
 	"meovving-project-web-fiks/services"
 
+	"cloud.google.com/go/firestore"
 	"firebase.google.com/go/auth"
 	"github.com/gin-gonic/gin"
 )
@@ -209,24 +210,32 @@ func (ctrl *PersonalizationController) GetProfilesHandler(c *gin.Context) {
 func (ctrl *PersonalizationController) SetInitialPreferenceHandler(c *gin.Context) {
     userID, _ := c.Get("user_uid")
     
-    // 1. Ambil pilihan genre dari body (misal: ["Action", "Comedy"])
-    var genres []string
-    if err := c.ShouldBindJSON(&genres); err != nil {
-        c.JSON(400, gin.H{"error": "Genre tidak valid"})
+    // SESUAIKAN: Gunakan struct agar cocok dengan JSON dari search-filter.js
+    var req struct {
+        Genres []string `json:"genres"`
+    }
+
+    if err := c.ShouldBindJSON(&req); err != nil {
+        c.JSON(400, gin.H{"error": "Format data genre tidak valid"})
         return
     }
 
-    // 2. Simpan Genre ke Firestore user utama
-    // ... logic Simpan Genre ...
+    // 1. Simpan ke Firestore
+    userDoc := config.FirestoreClient.Collection("users").Doc(userID.(string))
+    _, err := userDoc.Update(c.Request.Context(), []firestore.Update{
+        {Path: "preferences", Value: req.Genres},
+    })
+    if err != nil {
+        c.JSON(500, gin.H{"error": "Gagal menyimpan preferensi ke Firestore"})
+        return
+    }
 
-    // 3. Panggil service untuk BUAT PROFIL OTOMATIS
-    // Ambil data user dulu untuk tau PackageName-nya
+    // 2. Lanjutkan Inisialisasi Profil (Kode aslimu sudah benar)
     user, _ := ctrl.PService.GetUser(c.Request.Context(), userID.(string)) 
-    
-    err := ctrl.PService.InitInitialProfiles(c.Request.Context(), userID.(string), user.PackageName)
+    err = ctrl.PService.InitInitialProfiles(c.Request.Context(), userID.(string), user.PackageName)
     
     if err != nil {
-        c.JSON(500, gin.H{"error": "Gagal inisialisasi profil"})
+        c.JSON(500, gin.H{"error": "Gagal inisialisasi profil otomatis"})
         return
     }
 

@@ -24,16 +24,21 @@ document.addEventListener('DOMContentLoaded', () => {
     loadAccountData();
 });
 
-function loadAccountData() {
-    // Generate tanggal membership (dummy: setahun dari sekarang)
+async function loadAccountData() {
+    // Tanggal membership tetap dummy atau ambil dari database jika ada field-nya
     const nextYear = new Date();
     nextYear.setFullYear(nextYear.getFullYear() + 1);
     const options = { year: 'numeric', month: 'long', day: 'numeric' };
     validDateEl.textContent = nextYear.toLocaleDateString('en-US', options);
 
-    // Load Email
-    const savedEmail = localStorage.getItem('userEmail') || "brrpatapim@gmail.com";
-    currentEmailDisplay.textContent = savedEmail;
+    // Ambil email asli dari server/token, bukan localStorage dummy
+    try {
+        // Jika Richan menyimpan email di token JWT saat login:
+        const userEmail = localStorage.getItem('userEmail') || "Loading...";
+        currentEmailDisplay.textContent = userEmail;
+    } catch (e) {
+        currentEmailDisplay.textContent = "brrpatapim@gmail.com";
+    }
 }
 
 // --- 2. NAVIGATION LOGIC ---
@@ -92,29 +97,73 @@ function handleBack() {
 
 // --- 3. ACTIONS (SAVE DATA) ---
 
-function savePassword() {
+async function savePassword() {
     const newPass = document.getElementById('newPass').value;
     const confirmPass = document.getElementById('confirmPass').value;
 
     if (newPass && newPass === confirmPass) {
-        localStorage.setItem('userPassword', newPass); // Simpan dummy
-        alert("Password Changed Successfully!");
-        goTo('main');
+        try {
+            const response = await fetch('http://localhost:8080/api/v1/premium/user/change-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    // Pastikan token login dikirim jika ada middleware auth di backend
+                    'Authorization': `Bearer ${localStorage.getItem('token')}` 
+                },
+                body: JSON.stringify({
+                    new_password: newPass
+                })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert("Password Updated in Database!");
+                goTo('main');
+            } else {
+                alert("Failed: " + result.error);
+            }
+        } catch (error) {
+            console.error("Error updating password:", error);
+            alert("Server connection error");
+        }
     } else {
-        alert("Passwords do not match or empty!");
+        alert("Passwords do not match!");
     }
 }
 
-function saveEmail() {
-    // Anggap OTP validasi sukses
+async function saveEmail() {
     const email = newEmailInput.value;
+    
     if(email) {
-        localStorage.setItem('userEmail', email);
-        alert("Email Changed Successfully!");
-        loadAccountData(); // Update tampilan email
-        goTo('main');
+        try {
+            const response = await fetch('http://localhost:8080/api/account/update', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                },
+                body: JSON.stringify({
+                    new_email: email
+                })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                // Sesuai permintaan: Link dikirim ke email
+                alert("Verification link has been sent to " + email + ". Please check your inbox!");
+                loadAccountData(); 
+                goTo('main');
+            } else {
+                alert("Error: " + result.error);
+            }
+        } catch (error) {
+            console.error("Error updating email:", error);
+            alert("Could not connect to server");
+        }
     } else {
-        alert("Email Invalid");
+        alert("Please enter a valid email address");
     }
 }
 

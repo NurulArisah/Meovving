@@ -40,10 +40,18 @@ func NewPaymentService() PaymentService {
 func (s *paymentService) CreateXenditInvoice(ctx context.Context, userID, packageName string, amount int64) (string, string, error) {
     externalID := fmt.Sprintf("%s-%d", userID, time.Now().Unix())
 
+    var maxProfiles int
+    switch packageName {
+    case "Family": maxProfiles = 5
+    case "Duo":    maxProfiles = 2
+    default:       maxProfiles = 1
+    }
+
     // Metadata harus dipastikan tidak nil dan sesuai format yang didukung
     metadata := map[string]interface{}{
         "user_uid":     userID,
         "package_name": packageName,
+        "max_profiles": maxProfiles,
     }
 
     createInvoiceRequest := invoice.CreateInvoiceRequest{
@@ -51,6 +59,7 @@ func (s *paymentService) CreateXenditInvoice(ctx context.Context, userID, packag
         Amount:      float64(amount),
         Description: stringPtr(fmt.Sprintf("Subscription Package: %s", packageName)),
         Metadata:    metadata, // Pastikan dipassing langsung ke field Metadata
+        SuccessRedirectUrl: stringPtr("http://127.0.0.1:5500/frontend/public/success-payment.html"),
     }
 
     // DEBUG: Pastikan data sebelum dikirim sudah benar

@@ -12,26 +12,47 @@ if (planName && planPrice) {
 }
 
 // 3. Fungsi Proses Pembayaran
-function processPayment() {
-    // Tampilkan efek loading sederhana (opsional)
+async function processPayment() {
+    // 1. Persiapan Data & UI Loading
     const btn = document.getElementById('payButton');
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
-    btn.classList.add('opacity-75', 'cursor-not-allowed');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Initializing Transaction...';
+    btn.disabled = true;
 
-    // --- LOGIKA REDIRECT KE LINK QRIS ---
-    
-    // Simulasikan delay sedikit biar terasa "memproses"
-    setTimeout(() => {
-        // GANTI URL LINK QRIS ASLI
-        // const qrisLink = "https://app.midtrans.com/payment-link/...."; 
-        
-        // KARENA INI DEMO:
-        // pergi ke halaman success-payment.html 
-        // seolah-olah user sudah bayar di link QRIStersebut.
-        
-        window.location.href = "success-payment.html"; 
-        
-        // Contoh jika mau ke link luar:
-        // window.location.href = "https://google.com"; // Ganti link qris
-    }, 1000);
+    const selectedName = localStorage.getItem("selectedPlanName");
+    const selectedPrice = localStorage.getItem("selectedPlanPrice");
+    const token = localStorage.getItem("token"); // Diambil saat user login
+
+    // 2. Fetch ke Backend Go (CheckoutHandler)
+    try {
+        const response = await fetch('http://localhost:8080/api/v1/payment/checkout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+                package_name: selectedName,
+                amount: parseInt(selectedPrice) // Pastikan dikirim sebagai angka
+            })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            // 3. Redirect ke URL Xendit (Invoice URL)
+            // Xendit akan menangani tampilan QRIS secara otomatis
+            window.location.href = result.payment_url;
+        } else {
+            // Jika backend menolak (misal: token expired)
+            alert("Error: " + (result.error || "Gagal membuat transaksi"));
+            btn.innerHTML = originalText;
+            btn.disabled = false;
+        }
+    } catch (err) {
+        console.error("Connection error:", err);
+        alert("Server tidak merespon. Pastikan backend Go sudah berjalan.");
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+    }
 }

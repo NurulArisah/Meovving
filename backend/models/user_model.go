@@ -6,14 +6,14 @@ import (
 
 // User merepresentasikan struktur data pengguna di Firestore
 type User struct {
-    FirebaseUID     string    `firestore:"firebase_uid"`
+    FirebaseUID     string    `json:"uid" firestore:"uid"`
     Email           string    `firestore:"email"`
     Username        string    `firestore:"username"`
-    StatusPembayaran bool      `firestore:"status_pembayaran"` // Default: false
+    StatusPembayaran bool     `json:"status_pembayaran" firestore:"status_pembayaran"` // Default: false
     TanggalDaftar    time.Time `firestore:"tanggal_daftar"`
 
-	PackageName      string    `firestore:"package_name"`      // Contoh: "Family", "Duo", "Individual"
-    MaxProfiles      int       `firestore:"max_profiles"`      // Slot Profil Maksimum (3, 2, atau 1)
+	PackageName      string    `json:"package_name" firestore:"package_name"`      // Contoh: "Family", "Duo", "Individual"
+    MaxProfiles      int       `json:"max_profiles" firestore:"max_profiles"`      // Slot Profil Maksimum (3, 2, atau 1)
     CurrentProfiles  int       `firestore:"current_profiles"`  // Jumlah Profil yang sudah dibuat
     HasKidsProfile   bool      `firestore:"has_kids_profile"`  // True jika ada profil anak
     Genres          []string   `firestore:"favorite_genres"`

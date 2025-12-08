@@ -18,8 +18,6 @@ type SearchHistory struct {
 
 // UserProfile (Diperluas untuk menyimpan array referensi ke koleksi lain)
 type UserProfile struct {
-    // ... field yang sudah ada (misal: StatusPembayaran)
-    // Field baru untuk memetakan ke koleksi favorit dan riwayat
     FavoritesCollection string `firestore:"favorites_collection"` // Misal: users/UID/favorites
     HistoryCollection   string `firestore:"history_collection"`   // Misal: users/UID/history
 }

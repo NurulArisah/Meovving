@@ -32,7 +32,7 @@ func main() {
 	authController := controllers.NewAuthController(authService)
 	movieController := controllers.NewMovieController(tmdbService, personalizationService)
 	personalizationController := controllers.NewPersonalizationController(personalizationService, tmdbService) 
-	paymentController := controllers.NewPaymentController(paymentService, authService) // Controller Payment
+	paymentController := controllers.NewPaymentController(paymentService, authService, cfg) // Controller Payment
 	
 	// 4. Inisialisasi Gin Router
 	router := gin.Default()
@@ -100,6 +100,7 @@ func main() {
 		premiumRoutes.GET("/profiles/dashboard", personalizationController.GetProfileDashboardHandler)
 
 		premiumRoutes.POST("/user/change-email-request", personalizationController.RequestChangeEmailHandler)
+		premiumRoutes.POST("/user/change-password", authController.UpdateAccountHandler)
 		premiumRoutes.POST("/user/verify-email-otp", personalizationController.VerifyEmailOTP)
 	}
 

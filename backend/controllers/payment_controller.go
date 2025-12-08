@@ -7,6 +7,7 @@ import (
 	// "time"
 	// "fmt"
 
+	"meovving-project-web-fiks/config"
 	"meovving-project-web-fiks/services"
 
 	"github.com/gin-gonic/gin"
@@ -15,12 +16,14 @@ import (
 type PaymentController struct {
 	PService services.PaymentService
 	AService services.AuthService 
+	Config   *config.EnvConfig
 }
 
-func NewPaymentController(p services.PaymentService, a services.AuthService) *PaymentController {
+func NewPaymentController(p services.PaymentService, a services.AuthService, cfg *config.EnvConfig) *PaymentController {
 	return &PaymentController{
 		PService: p,
 		AService: a,
+		Config:   cfg,
 	}
 }
 
@@ -82,6 +85,14 @@ func (ctrl *PaymentController) CheckoutHandler(c *gin.Context) {
 
 // XenditWebhookHandler: POST /api/v1/payment/notification (Dipanggil oleh Xendit)
 func (ctrl *PaymentController) XenditWebhookHandler(c *gin.Context) {
+
+	callbackToken := c.GetHeader("x-callback-token")
+    if callbackToken != ctrl.Config.XenditCallbackToken { 
+        log.Printf("Peringatan: Upaya akses ilegal ke Webhook dari IP: %s", c.ClientIP())
+        c.JSON(http.StatusForbidden, gin.H{"error": "Unauthorized webhook"})
+        return
+    }
+
     // Definisi struct harus match dengan format Xendit (metadata lowercase)
     var notification struct {
         ID         string                 `json:"id"`

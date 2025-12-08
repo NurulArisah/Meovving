@@ -134,7 +134,7 @@ func (s *tmdbService) SearchMovies(ctx context.Context, query string) ([]models.
         return nil, fmt.Errorf("TMDB Search API Error %d: %s", resp.StatusCode, string(body))
     }
 
-    var tmdbResponse models.PopularMoviesResponse // Kita gunakan struct response yang sama
+    var tmdbResponse models.PopularMoviesResponse // gunakan struct response yang sama
     if err := json.NewDecoder(resp.Body).Decode(&tmdbResponse); err != nil {
         return nil, fmt.Errorf("gagal unmarshal JSON search TMDB: %w", err)
     }
@@ -179,7 +179,7 @@ func (s *tmdbService) FetchKidsMovies(ctx context.Context) ([]models.Movie, erro
 func (s *tmdbService) FetchMoviesByGenre(ctx context.Context, genreID string, isKids bool) ([]models.Movie, error) {
     url := fmt.Sprintf("%s/discover/movie?api_key=%s&language=id-ID&with_genres=%s&sort_by=popularity.desc", s.BaseURL, s.APIKey, genreID)
     
-    // Logika tambahan jika isKids: true (Tambahkan filter rating G)
+    // jika isKids: true (Tambahkan filter rating G)
     if isKids {
         url += "&certification_country=US&certification=G&include_adult=false"
     }
@@ -198,7 +198,6 @@ func (s *tmdbService) FetchMoviesByRegion(ctx context.Context, region string, is
     return s.doRequest(ctx, url, 20)
 }
 
-// Tambahkan/Update fungsi helper doRequest di bagian paling bawah
 func (s *tmdbService) doRequest(ctx context.Context, url string, limit int) ([]models.Movie, error) {
     req, err := http.NewRequestWithContext(ctx, "GET", url, nil)
     if err != nil {

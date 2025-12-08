@@ -3,6 +3,7 @@ package controllers
 import (
     "net/http"
     "errors"
+    "time"
     
     "meovving-project-web-fiks/config"
     "meovving-project-web-fiks/models" 
@@ -60,16 +61,81 @@ func (ctrl *AuthController) Login(c *gin.Context) {
         return
     }
 
-    // Verifikasi ID Token via Firebase Admin SDK
-    token, err := config.FirebaseAuth.VerifyIDToken(c, input.IDToken)
+    // 1. Verifikasi ID Token via Firebase Admin SDK
+    token, err := config.FirebaseAuth.VerifyIDToken(c.Request.Context(), input.IDToken)
     if err != nil {
         c.JSON(401, gin.H{"error": "Invalid token"})
         return
     }
 
-    // Token valid! 'token.UID' adalah ID user di Firebase
+    // 2. CEK APAKAH USER SUDAH ADA DI FIRESTORE
+    // Kita gunakan token.UID sebagai kunci dokumen di Firestore
+    userDocRef := config.FirestoreClient.Collection("users").Doc(token.UID)
+    doc, err := userDocRef.Get(c.Request.Context())
+
+    if err != nil || !doc.Exists() {
+        // Jika dokumen TIDAK ADA, berarti ini user baru (Sign Up via Google)
+        
+        // Ambil data tambahan dari token Google
+        email := token.Claims["email"].(string)
+        name, _ := token.Claims["name"].(string)
+
+        newUser := models.User{
+            FirebaseUID:      token.UID,
+            Email:            email,
+            Username:         name,
+            TanggalDaftar:    time.Now(),
+            StatusPembayaran: false, // Default false sebelum ke halaman package
+            PackageName:      "",    // Kosongkan karena belum pilih paket
+        }
+
+        // Simpan ke Firestore
+        _, err = userDocRef.Set(c.Request.Context(), newUser)
+        if err != nil {
+            c.JSON(500, gin.H{"error": "Gagal mencatat profil ke Firestore"})
+            return
+        }
+    }
+
+    // 3. Response Sukses
     c.JSON(200, gin.H{
-        "message": "Authenticated successfully",
+        "message": "Authenticated successfully and profile synced",
         "uid":     token.UID,
     })
+}
+
+func (a *AuthController) UpdateAccountHandler(c *gin.Context) {
+    var input struct {
+        NewPassword string `json:"new_password"`
+        NewEmail    string `json:"new_email"`
+    }
+    
+    // Bind JSON dari account.js
+    if err := c.ShouldBindJSON(&input); err != nil {
+        c.JSON(400, gin.H{"error": "Data tidak valid"})
+        return
+    }
+
+    userID := c.GetString("user_id") // Didapat dari middleware auth
+    authSvc := services.NewAuthService()
+
+    // Jika ada input password
+    if input.NewPassword != "" {
+        err := authSvc.UpdatePassword(c.Request.Context(), userID, input.NewPassword)
+        if err != nil {
+            c.JSON(500, gin.H{"error": err.Error()})
+            return
+        }
+    }
+
+    // Jika ada input email baru
+    if input.NewEmail != "" {
+        _, err := authSvc.RequestEmailChange(c.Request.Context(), userID, input.NewEmail)
+        if err != nil {
+            c.JSON(500, gin.H{"error": err.Error()})
+            return
+        }
+    }
+
+    c.JSON(200, gin.H{"message": "Permintaan akun berhasil diproses!"})
 }

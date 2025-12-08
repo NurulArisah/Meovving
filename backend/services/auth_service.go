@@ -25,6 +25,8 @@ type AuthService interface {
 	// Diubah: Menerima email, password, username (untuk Sign Up)
 	SignUp(ctx context.Context, email, password, username string) (string, error) 
 	UpdateUserPackage(ctx context.Context, userID string, packageName string) error
+	UpdatePassword(ctx context.Context, userID string, newPassword string) error
+    RequestEmailChange(ctx context.Context, userID string, newEmail string) (string, error)
 }
 
 // authService adalah implementasi dari AuthServiceInterface
@@ -144,4 +146,41 @@ func (s *authService) UpdateUserPackage(ctx context.Context, userID string, pack
 
     log.Println("Aktivasi Firestore Berhasil!")
     return nil
+}
+
+func (s *authService) UpdatePassword(ctx context.Context, userID string, newPassword string) error {
+    params := (&auth.UserToUpdate{}).
+        Password(newPassword)
+
+    _, err := config.FirebaseAuth.UpdateUser(ctx, userID, params)
+    if err != nil {
+        log.Printf("Gagal update password UID %s: %v", userID, err)
+        return errors.New("gagal memperbarui password di Firebase")
+    }
+    return nil
+}
+
+func (s *authService) RequestEmailChange(ctx context.Context, userID string, newEmail string) (string, error) {
+    // 1. Cek apakah email baru sudah dipakai user lain
+    _, err := config.FirebaseAuth.GetUserByEmail(ctx, newEmail)
+    if err == nil {
+        return "", errors.New("email sudah terdaftar oleh pengguna lain")
+    }
+
+    // 2. Generate Link Verifikasi Email Baru
+    // Ini akan mengirimkan instruksi ke email baru user
+    actionCodeSettings := &auth.ActionCodeSettings{
+        URL: "http://localhost:3000/account", // Alamat kemana user diarahkan setelah klik link
+        HandleCodeInApp: true,
+    }
+
+    link, err := config.FirebaseAuth.EmailVerificationLinkWithSettings(ctx, newEmail, actionCodeSettings)
+    if err != nil {
+        return "", errors.New("gagal membuat link verifikasi")
+    }
+
+    // Link ini nanti dikirim via email (Risa bisa gunakan SMTP Go atau Firebase SDK)
+    log.Printf("Link Verifikasi untuk %s: %s", newEmail, link)
+
+    return link, nil
 }

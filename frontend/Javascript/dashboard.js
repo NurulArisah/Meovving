@@ -53,7 +53,7 @@ function renderDashboard(data, isKids) {
             <div class="flex overflow-x-auto gap-10 px-8 pb-10 pt-4 scrollbar-hide snap-x">
                 ${data.trending.map((movie, index) => `
                     <div class="relative flex-shrink-0 w-[140px] cursor-pointer group snap-center" 
-                         onclick="openMovieModal(${movie.id})">
+                        onclick="openMovieModal(${movie.id})">
                         <h1 class="absolute -bottom-6 -left-8 text-[120px] font-anton text-outline-shadow z-20 pointer-events-none">${index + 1}</h1>
                         <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" class="w-full h-[210px] object-cover rounded-xl z-10 group-hover:border-gray-500 border border-transparent">
                     </div>
