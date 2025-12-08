@@ -1,8 +1,6 @@
 // Lokasi: frontend/javascript/whos-watching.js
 
-// ==========================================
-// 1. AMBIL DATA DINAMIS DARI LOCAL STORAGE
-// ==========================================
+// AMBIL DATA DINAMIS DARI LOCAL STORAGE
 
 // Ambil paket yang dipilih dari halaman Package
 // Jika tidak ada data (misal langsung login), default ke 'individual'
@@ -10,7 +8,7 @@ const storedPlan = localStorage.getItem('selectedPlanName');
 const CURRENT_PLAN = storedPlan ? storedPlan.toLowerCase() : 'individual'; 
 
 // Ambil username dari halaman Login/Signup
-// Jika tidak ada data, default ke 'Me'
+// JIKA tidak ada data, default ke 'Me'
 const mainUserName = localStorage.getItem('activeUser') || 'Me'; 
 
 // ==========================================
@@ -19,10 +17,10 @@ const PLAN_LIMITS = {
   'individual': 1,
   'duo': 2,
   'family': 5,
-  'premium': 5 // Jaga-jaga jika nama paketnya 'premium' tapi fiturnya sama kayak family
+  'premium': 5 // jaga-jaga nama paketnya 'premium' tapi fiturnya sama kayak family
 };
 
-// Data Profil Awal (Otomatis menggunakan nama User Utama)
+// Data profil awal (Otomatis menggunakan nama user utama)
 let profiles = [
   { id: 1, name: mainUserName, color: 'bg-blue-700', isKids: false }
 ];
@@ -36,29 +34,27 @@ if (CURRENT_PLAN.includes('family')) {
     profiles.push({ 
       id: 999, 
       name: 'Kids', 
-      color: 'bg-pink-500', // Warna Pink khas profil anak
+      color: 'bg-pink-500', // Warna pink khas profil anak
       isKids: true          // Penanda khusus untuk filtering konten nanti
     });
   }
 }
 
-// Palette warna untuk profil baru (random pick)
+// palette warna untuk profil baru (random pick)
 const colorPalette = [
   'bg-blue-600', 'bg-orange-500', 'bg-pink-600', 
   'bg-purple-600', 'bg-green-600', 'bg-teal-500',
   'bg-indigo-600', 'bg-rose-600', 'bg-yellow-600'
 ];
 
-/**
- * Fungsi Utama: Merender tampilan profil ke HTML
- */
+// Fungsi Utama: Merender tampilan profil ke HTML 
 function renderProfiles() {
   const container = document.getElementById('profilesContainer');
   if (!container) return; // Error safety
 
   container.innerHTML = ''; 
   
-  // Ambil batas kuota berdasarkan paket. Jika paket tidak dikenali, default 1.
+  // Ambil batas kuota berdasarkan paket. Jika paket tidak dikenali, default 1
   const maxLimit = PLAN_LIMITS[CURRENT_PLAN] || 1;
 
   // Logika Layout: Tengah untuk Individual, Grid untuk Duo/Family

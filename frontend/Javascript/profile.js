@@ -31,7 +31,7 @@ function loadProfileData() {
     editAvatarInitial.textContent = initial;
 }
 
-// --- FUNGSI RENDER UTAMA ---
+// FUNGSI RENDER UTAMA
 function renderMovieLists() {
     // 1. Ambil data asli dari LocalStorage
     const myFavorites = JSON.parse(localStorage.getItem('favorites')) || [];
@@ -51,7 +51,7 @@ function renderMovieLists() {
     renderContainer('watchlistContainer', myWatchlist, "Your watchlist is empty.");
 
     // 4. Render Recent Container (Dummy)
-    renderContainer('recentContainer', dummyRecent, "");
+    renderContainer('recentContainer', dummyRecent, "No recently view yet.");
 }
 
 // Helper Function untuk Render Kartu Film
@@ -73,7 +73,7 @@ function renderContainer(containerId, movies, emptyMessage) {
     }
 }
 
-// --- NAVIGASI MODE ---
+// NAVIGASI MODE 
 
 function openEditMode() {
     viewMode.classList.add('hidden');
@@ -93,7 +93,7 @@ function saveProfile() {
     }
 }
 
-// --- PIN MODE ---
+// PIN MODE
 function openPinMode() {
     editMode.classList.add('hidden');
     pinMode.classList.remove('hidden');

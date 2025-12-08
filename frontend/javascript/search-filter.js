@@ -35,6 +35,5 @@ function submitSelection() {
   console.log("Genre terpilih:", selectedGenres);
   
   // Arahkan ke halaman selanjutnya
-  // ke dashboard (index.html)
   window.location.href = 'whos-watching.html'; 
 }
