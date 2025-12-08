@@ -5,35 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Choose Package</title>
 
-
-
-  <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
-    body {
-      font-family: 'Poppins', 'Manrope', sans-serif;
-    }
+    body { font-family: 'Poppins', 'Manrope', sans-serif; }
   </style>
 </head>
 
 <body class="bg-black text-white flex flex-col items-center justify-start min-h-screen px-6 py-10">
 
-  <!-- Header -->
-  <div class="w-full  flex justify-between items-right mb-6">
-    <a href="../public/login.html" class=" absolute top-9 right-5 text-[14px] text-gray-400 hover:text-white">Cancel</a> <!-- kembali ke page login-->
+  <div class="w-full flex justify-between items-right mb-6">
+    <a href="../public/login.html" class="absolute top-9 right-5 text-[14px] text-gray-400 hover:text-white">Cancel</a>
   </div>
 
-  <!-- Title -->
   <h2 class="text-xl text-left font-regular mt-9 mb-8">
     Choose The Right Package For You
   </h2>
 
-  <!-- Packages -->
   <div class="flex flex-col gap-5 w-full max-w-sm">
 
-    <!-- Family -->
-    <a href="payment-method.html?plan=family"
+    <a href="confirm-payment.html"
        data-plan="Family"
        data-price="Rp. 49.900,00"
        class="block border border-[#CC361E] rounded-2xl p-5 hover:bg-[#CC361E]/10 transition-all duration-300 hover:scale-[1.02]">
@@ -44,8 +36,7 @@
       <p class="text-right text-base font-regular">Rp. 49.900,00</p>
     </a>
 
-    <!-- Duo -->
-    <a href="payment-method.html?plan=duo"
+    <a href="confirm-payment.html"
        data-plan="Duo"
        data-price="Rp. 29.900,00"
        class="block border border-[#CC361E] rounded-2xl p-5 hover:bg-[#CC361E]/10 transition-all duration-300 hover:scale-[1.02]">
@@ -56,10 +47,9 @@
       <p class="text-right text-base font-regular">Rp. 29.900,00</p>
     </a>
 
-    <!-- Individu -->
-    <a href="payment-method.html?plan=individu"
+    <a href="confirm-payment.html"
        data-plan="Individu"
-      data-price="Rp. 19.900,00"
+       data-price="Rp. 19.900,00"
        class="block border border-[#CC361E] rounded-2xl p-5 hover:bg-[#CC361E]/10 transition-all duration-300 hover:scale-[1.02]">
       <h3 class="text-[22px] font-bold mb-2">Individu</h3>
       <ul class="text-[18px] text-gray-300 list-disc list-inside mb-4">
@@ -70,10 +60,6 @@
 
   </div>
 
-  <!-- JS -->
   <script src="../Javascript/package.js"></script> 
-  
-  <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
 </body>
 </html>

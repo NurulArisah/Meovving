@@ -4,54 +4,58 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Confirm Payment</title>
-
   
- 
-  <!-- font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-black text-white min-h-screen flex flex-col items-center px-6 py-8 font-[Poppins]">
 
-  <!-- Header -->
   <div class="w-full flex justify-between items-center mb-8">
     <h1 class="text-lg font-semibold">Confirm Payment</h1>
-    <a href="payment-method.html" class="text-sm text-gray-400 hover:text-white">Cancel</a>
+    <a href="package.html" class="text-sm text-gray-400 hover:text-white">Cancel</a>
   </div>
 
-  <!-- Package Info -->
-  <div class="w-full max-w-sm border border-[#CC361E] rounded-2xl p-5 mb-8">
-    <h2 id="planName" class="text-lg font-semibold mb-2">Family</h2>
-    <p id="planPrice" class="text-right text-base font-medium">Rp. 49.900,00</p>
-  </div>
-
-
-
-
-  <!-- Selected Payment -->
-  <div class="w-full max-w-sm bg-[#1C1C1C] rounded-2xl p-4 mb-8">
-    <h3 class="text-sm font-medium text-gray-300 mb-3">Payment Method</h3>
-    <div class="flex items-center py-2 px-2 bg-[#2C2C2C] rounded-xl">
-      <img src="../assets/icons/dana.svg" alt="DANA" class="w-6 h-6 mr-3">
-      <span class="text-[#00AEEF] font-semibold">DANA</span>
+  <div class="w-full max-w-sm border border-[#CC361E] rounded-2xl p-5 mb-8 bg-[#CC361E]/5">
+    <h2 class="text-sm text-gray-400 mb-1">Selected Package</h2>
+    <div class="flex justify-between items-center">
+        <h2 id="planName" class="text-xl font-bold">Loading...</h2>
+        <p id="planPrice" class="text-lg font-medium text-[#CC361E]">Rp 0</p>
     </div>
   </div>
 
-  <!-- Note -->
-  <p class="text-center text-sm text-gray-300 mb-8 max-w-xs">
-    Complete your payment and get full access to today's best movie trend analysis!
+  <div class="w-full max-w-sm mb-8">
+    <h3 class="text-sm font-medium text-gray-300 mb-3">Payment Method</h3>
+    
+    <div class="flex items-center justify-between w-full py-4 px-5 bg-[#1C1C1C] rounded-2xl border border-gray-700">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-white rounded-md flex items-center justify-center">
+                <i class="fas fa-qrcode text-black text-xl"></i>
+                </div>
+            <div>
+                <span class="block text-white font-semibold">QRIS</span>
+                <span class="block text-xs text-gray-400">Scan to pay instantly</span>
+            </div>
+        </div>
+        <div class="w-5 h-5 bg-[#CC361E] rounded-full flex items-center justify-center">
+             <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
+        </div>
+    </div>
+  </div>
+
+  <p class="text-center text-sm text-gray-400 mb-auto max-w-xs leading-relaxed">
+    By clicking "Pay Now", you will be redirected to the QRIS payment page to complete your transaction.
   </p>
 
-  <!-- Pay Button -->
   <button
-  onclick="window.location.href='success-payment.html'"
-  class="w-full max-w-xs bg-[#CC361E] text-white py-3 rounded-xl text-lg font-medium mt-10 hover:opacity-90 transition">
-  Pay
+    id="payButton"
+    onclick="processPayment()"
+    class="w-full max-w-xs bg-[#CC361E] text-white py-3.5 rounded-xl text-lg font-semibold mt-6 mb-4 hover:bg-red-700 transition shadow-lg shadow-red-900/20">
+    Pay Now
   </button>
 
-  <!-- js + tailwind-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <script src="../javascript/confirm-payment.js"></script>
-   <script src="https://cdn.tailwindcss.com"></script>
 
 </body>
 </html>
