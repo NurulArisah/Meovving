@@ -97,6 +97,7 @@ function saveProfile() {
     }
 }
 
+// PIN MODE
 function saveNewPin() {
     const pin = newPinInput.value.trim();
     if (pin.length > 0) {
@@ -108,18 +109,6 @@ function saveNewPin() {
         closePinMode();
     } else {
         showPopup('error', 'Error', 'PIN cannot be empty!');
-    }
-}
-
-// PIN MODE
-function saveNewPin() {
-    const pin = newPinInput.value.trim();
-    if (pin.length > 0) {
-        localStorage.setItem('userPin', pin);
-        alert("Success! PIN Saved.");
-        closePinMode();
-    } else {
-        alert("PIN cannot be empty!");
     }
 }
 

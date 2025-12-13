@@ -1,8 +1,8 @@
-// signup.js - VERSI STABIL
+// signup.js - VERSI POPUP
 const url = "http://192.168.1.12:8080/api/v1/auth/signup";
 
 async function daftarUser(event) {
-    event.preventDefault(); 
+    if(event) event.preventDefault(); 
     
     const data = {
         email: document.getElementById('email').value,
@@ -22,30 +22,39 @@ async function daftarUser(event) {
             body: JSON.stringify(data)
         });
 
-        // PERBAIKAN: Jangan langsung panggil .json() sebelum cek status
         if (response.ok) {
             const result = await response.json();
-            alert("BERHASIL: " + result.message);
-            window.location.href = "package.html"; // Pindah ke login
+            
+            // GANTI ALERT DENGAN POPUP SUCCESS
+            showPopup('success', 'Sign Up Success', result.message || 'Account created successfully.');
+            
+            // Delay sebentar biar popup muncul, baru pindah halaman
+            setTimeout(() => {
+                window.location.href = "package.html"; 
+            }, 1500);
+
         } else {
-            // Jika error (seperti 403, 400, 500), ambil detailnya
-            const errorData = await response.json().catch(() => ({ error: "Server menolak akses (Cek CORS)" }));
+            const errorData = await response.json().catch(() => ({ error: "Server error" }));
             console.error("Gagal dari Server:", errorData);
-            alert("GAGAL: " + (errorData.error || "Terjadi kesalahan pada server."));
+            
+            // GANTI ALERT DENGAN POPUP ERROR
+            showPopup('error', 'Sign Up Failed', errorData.error || "Please check your data.");
         }
     } catch (err) {
-        // Jika server mati atau IP salah (Timeout)
         console.error("Koneksi gagal:", err);
-        alert("Server tidak merespon. Pastikan Server Go sudah jalan dan Firewall laptop Backend sudah dibuka.");
+        // POPUP ERROR KONEKSI
+        showPopup('error', 'Connection Error', 'Server not responding. Check connection.');
     }
+}
+
+// UNTUK GOOGLE
+function handleGoogleLogin() {
+    localStorage.setItem('activeUser', 'Google User'); 
     
-    //  UNTUK GOOGLE
-    function handleGoogleLogin() {
-        // anggap user setuju mendaftar pakai akun Googlenya
-        localStorage.setItem('activeUser', 'Google User'); 
-        
-        // Karena ini signup, biasanya lanjut ke pilih paket dulu
-        alert("Signup with Google Berhasil! (Simulasi)");
+    // POPUP GOOGLE
+    showPopup('success', 'Google Signup', 'Successfully signed up with Google.');
+    
+    setTimeout(() => {
         window.location.href = "package.html";
-    }
+    }, 1500);
 }
