@@ -5,6 +5,7 @@ import (
     "errors"
     "time"
     
+    // "firebase.google.com/go/auth"
     "meovving-project-web-fiks/config"
     "meovving-project-web-fiks/models" 
     "meovving-project-web-fiks/services"
@@ -52,55 +53,83 @@ func (ctrl *AuthController) SignUp(c *gin.Context) {
     })
 }
 
+type ResponseLogin struct {
+    Message         string `json:"message"`
+    UID             string `json:"uid"`
+    RequiresPayment bool   `json:"requires_payment"`
+}
+
 func (ctrl *AuthController) Login(c *gin.Context) {
     var input struct {
         IDToken string `json:"id_token"`
     }
     if err := c.ShouldBindJSON(&input); err != nil {
-        c.JSON(400, gin.H{"error": "Token required"})
+        c.JSON(http.StatusBadRequest, gin.H{"error": "Token required"})
         return
     }
 
     // 1. Verifikasi ID Token via Firebase Admin SDK
     token, err := config.FirebaseAuth.VerifyIDToken(c.Request.Context(), input.IDToken)
     if err != nil {
-        c.JSON(401, gin.H{"error": "Invalid token"})
+        c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid token"})
         return
     }
 
-    // 2. CEK APAKAH USER SUDAH ADA DI FIRESTORE
-    // Kita gunakan token.UID sebagai kunci dokumen di Firestore
+    // 2. AMBIL DATA USER DARI FIRESTORE (atau buat jika Google Sign-in)
     userDocRef := config.FirestoreClient.Collection("users").Doc(token.UID)
     doc, err := userDocRef.Get(c.Request.Context())
 
+    var user models.User
+    
     if err != nil || !doc.Exists() {
-        // Jika dokumen TIDAK ADA, berarti ini user baru (Sign Up via Google)
+        // A. USER BARU (SIGN UP via Google)
         
         // Ambil data tambahan dari token Google
         email := token.Claims["email"].(string)
         name, _ := token.Claims["name"].(string)
 
-        newUser := models.User{
+        user = models.User{ // Inisialisasi struct user baru
             FirebaseUID:      token.UID,
             Email:            email,
             Username:         name,
             TanggalDaftar:    time.Now(),
-            StatusPembayaran: false, // Default false sebelum ke halaman package
-            PackageName:      "",    // Kosongkan karena belum pilih paket
+            StatusPembayaran: false, // Default: Belum Bayar
+            PackageName:      "",
         }
 
         // Simpan ke Firestore
-        _, err = userDocRef.Set(c.Request.Context(), newUser)
+        _, err = userDocRef.Set(c.Request.Context(), user)
         if err != nil {
-            c.JSON(500, gin.H{"error": "Gagal mencatat profil ke Firestore"})
+            c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal mencatat profil ke Firestore"})
+            return
+        }
+        
+    } else {
+        // B. USER LAMA (LOGIN)
+        if err := doc.DataTo(&user); err != nil {
+            c.JSON(http.StatusInternalServerError, gin.H{"error": "Gagal membaca data user dari Firestore"})
             return
         }
     }
 
-    // 3. Response Sukses
-    c.JSON(200, gin.H{
-        "message": "Authenticated successfully and profile synced",
-        "uid":     token.UID,
+    // 3. LOGIKA CEK PEMBAYARAN
+    
+    // Asumsi: Semua user harus punya StatusPembayaran = true untuk masuk
+    if !user.StatusPembayaran {
+        // User belum bayar, kirim respons khusus ke frontend
+        c.JSON(http.StatusOK, ResponseLogin{
+            Message: "Pembayaran diperlukan.",
+            UID:     token.UID,
+            RequiresPayment: true, // Frontend akan membaca flag ini!
+        })
+        return
+    }
+    
+    // 4. RESPONSE SUKSES (Sudah Bayar)
+    c.JSON(http.StatusOK, ResponseLogin{
+        Message: "Authenticated successfully and profile synced.",
+        UID:     token.UID,
+        RequiresPayment: false, // Sudah Bayar
     })
 }
 

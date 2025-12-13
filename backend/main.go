@@ -20,7 +20,7 @@ import (
 func main() {
 	// 1. Muat Konfigurasi & Init Firebase
 	cfg := config.LoadConfig()
-	config.InitFirebase(cfg)
+	config.InitFirebase()
 
 	// 2. Inisialisasi SERVICE Layer (Business Logic)
 	authService := services.NewAuthService()
