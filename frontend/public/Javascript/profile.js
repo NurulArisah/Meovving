@@ -80,20 +80,49 @@ function openEditMode() {
     editMode.classList.remove('hidden');
 }
 
+// Lokasi: frontend/javascript/profile.js
+
 function saveProfile() {
     const newName = editNameInput.value.trim();
     if (newName) {
         localStorage.setItem('activeProfile', newName);
-        alert("Profile Name Updated!");
+        
+        // POPUP
+        showPopup('success', 'Profile Updated', 'New name saved successfully.');
+        
         loadProfileData();
-        editMode.classList.add('hidden');
-        viewMode.classList.remove('hidden');
+        //  logic tutup modal
     } else {
-        alert("Name cannot be empty!");
+        showPopup('error', 'Failed', 'Name cannot be empty!');
+    }
+}
+
+function saveNewPin() {
+    const pin = newPinInput.value.trim();
+    if (pin.length > 0) {
+        localStorage.setItem('userPin', pin);
+        
+        // POPUP PIN
+        showPopup('lock', 'PIN Set', 'PIN successfully changed.');
+        
+        closePinMode();
+    } else {
+        showPopup('error', 'Error', 'PIN cannot be empty!');
     }
 }
 
 // PIN MODE
+function saveNewPin() {
+    const pin = newPinInput.value.trim();
+    if (pin.length > 0) {
+        localStorage.setItem('userPin', pin);
+        alert("Success! PIN Saved.");
+        closePinMode();
+    } else {
+        alert("PIN cannot be empty!");
+    }
+}
+
 function openPinMode() {
     editMode.classList.add('hidden');
     pinMode.classList.remove('hidden');
@@ -110,17 +139,6 @@ function closePinMode() {
     pageTitle.classList.remove('hidden');
     mainBackBtn.classList.remove('hidden');
     pinBackBtn.classList.add('hidden');
-}
-
-function saveNewPin() {
-    const pin = newPinInput.value.trim();
-    if (pin.length > 0) {
-        localStorage.setItem('userPin', pin);
-        alert("Success! PIN Saved.");
-        closePinMode();
-    } else {
-        alert("PIN cannot be empty!");
-    }
 }
 
 // NAVIGASI UTAMA

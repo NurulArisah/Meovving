@@ -287,20 +287,26 @@ function updateWatchlistButtonState() {
     }
 }
 
+// Lokasi: frontend/javascript/dashboard.js
+
 function handleModalWatchlist() {
     let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
     const index = watchlist.findIndex(m => m.title === currentModalMovie.title);
 
     if (index === -1) {
-        // Belum ada -> Tambahkan
+        // Tambah
         watchlist.push(currentModalMovie);
         localStorage.setItem('watchlist', JSON.stringify(watchlist));
-        alert(`${currentModalMovie.title} added to your watchlist!`);
+        
+        // --- POPUP CUSTOM ---
+        showPopup('bookmark', 'Added to Watchlist', `${currentModalMovie.title} saved.`);
     } else {
-        // Sudah ada -> Hapus (Opsional, atau biarkan alert saja)
+        // Hapus (Opsional: jika ingin fitur toggle hapus)
         // watchlist.splice(index, 1);
         // localStorage.setItem('watchlist', JSON.stringify(watchlist));
-        alert(`${currentModalMovie.title} is already in your watchlist.`);
+        
+        // --- POPUP CUSTOM ---
+        showPopup('error', 'Already Added', 'Movie is in your watchlist.');
     }
     
     updateWatchlistButtonState();

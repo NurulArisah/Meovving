@@ -11,27 +11,21 @@ if (planName && planPrice) {
     window.location.href = "package.html";
 }
 
-// 3. Fungsi Proses Pembayaran
+
 function processPayment() {
-    // Tampilkan efek loading sederhana (opsional)
     const btn = document.getElementById('payButton');
+    
+    // Ubah tombol jadi loading
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
     btn.classList.add('opacity-75', 'cursor-not-allowed');
 
-    // --- LOGIKA REDIRECT KE LINK QRIS ---
-    
-    // Simulasikan delay sedikit biar terasa "memproses"
+    // Simulasi Delay
     setTimeout(() => {
-        // GANTI URL LINK QRIS ASLI
-        // const qrisLink = "https://app.midtrans.com/payment-link/...."; 
-        
-        // KARENA INI DEMO:
-        // pergi ke halaman success-payment.html 
-        // seolah-olah user sudah bayar di link QRIStersebut.
-        
-        window.location.href = "success-payment.html"; 
-        
-        // Contoh jika mau ke link luar:
-        // window.location.href = "https://google.com"; // Ganti link qris
-    }, 1000);
+        showPopup('success', 'Payment Success!', 'Access activated.');
+
+        // Redirect setelah popup muncul sebentar
+        setTimeout(() => {
+            window.location.href = "success-payment.html"; 
+        }, 1500); // Tunggu 1.5 detik baru pindah
+    }, 1500);
 }

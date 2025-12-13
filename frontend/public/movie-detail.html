@@ -175,44 +175,33 @@
       }
 
       // TOGGLE FAVORITE
-      function toggleFavorite(btn) {
-          const icon = document.getElementById('favIcon');
-          let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-          const index = favorites.findIndex(m => m.id === movieData.id);
+      // Di dalam movie-detail.html
+        function toggleFavorite(btn) {
+            // ... kode icon logic lama ...
+            
+            if (index === -1) {
+                // ... kode simpan ...
+                // GANTI ALERT / TAMBAH POPUP
+                showPopup('love', 'Added to Favorites', 'Movie added to your favorites.');
+            } else {
+                // ... kode hapus ...
+                showPopup('error', 'Removed', 'Removed from favorites.');
+            }
+        }
 
-          if (index === -1) {
-              // Simpan
-              favorites.push(movieData);
-              localStorage.setItem('favorites', JSON.stringify(favorites));
-              icon.classList.remove('far');
-              icon.classList.add('fas');
-          } else {
-              // Hapus
-              favorites.splice(index, 1);
-              localStorage.setItem('favorites', JSON.stringify(favorites));
-              icon.classList.remove('fas');
-              icon.classList.add('far');
-          }
-      }
+        function toggleWatchlist(btn) {
+            // ... kode icon logic lama ...
 
-      // TOGGLE WATCHLIST
-      function toggleWatchlist(btn) {
-          const icon = document.getElementById('watchIcon');
-          let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
-          const index = watchlist.findIndex(m => m.id === movieData.id);
-
-          if (index === -1) {
-              watchlist.push(movieData);
-              localStorage.setItem('watchlist', JSON.stringify(watchlist));
-              icon.classList.remove('far');
-              icon.classList.add('fas');
-          } else {
-              watchlist.splice(index, 1);
-              localStorage.setItem('watchlist', JSON.stringify(watchlist));
-              icon.classList.remove('fas');
-              icon.classList.add('far');
-          }
-      }
+            if (index === -1) {
+                // ... kode simpan ...
+                // GANTI ALERT / TAMBAH POPUP
+                showPopup('bookmark', 'Added to Watchlist', 'Movie added to watchlist.');
+            } else {
+                // ... kode hapus ...
+                showPopup('error', 'Removed', 'Removed from watchlist.');
+            }
+        }
   </script>
+  <script src="Javascript/popup.js"></script>
 </body>
 </html>
