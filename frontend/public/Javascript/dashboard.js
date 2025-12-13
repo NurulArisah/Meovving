@@ -40,7 +40,44 @@ async function fetchRealDashboard() {
     }
 }
 
-// 2. LOGIKA RENDER UI (Sesuai Mapping TMDB)
+// Lokasi: frontend/javascript/dashboard.js
+
+function handleModalWatchlist() {
+    let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+    const index = watchlist.findIndex(m => m.title === currentModalMovie.title);
+
+    if (index === -1) {
+        // Tambah
+        watchlist.push(currentModalMovie);
+        localStorage.setItem('watchlist', JSON.stringify(watchlist));
+        
+        // --- POPUP CUSTOM ---
+        showPopup('bookmark', 'Added to Watchlist', `${currentModalMovie.title} saved.`);
+    } else {
+        // Hapus (Opsional: jika ingin fitur toggle hapus)
+        // watchlist.splice(index, 1);
+        // localStorage.setItem('watchlist', JSON.stringify(watchlist));
+        
+        // --- POPUP CUSTOM ---
+        showPopup('error', 'Already Added', 'Movie is in your watchlist.');
+    }
+    
+    updateWatchlistButtonState();
+}
+
+function handleModalDetails() {
+    // Arahkan ke halaman detail
+    window.location.href = 'movie-detail.html';
+}
+
+function closeModal(e) { if (e.target === modal) closeModalDirect(); }
+
+function closeModalDirect() {
+    modal.classList.add('opacity-0');
+    setTimeout(() => { modal.classList.remove('flex'); modal.classList.add('hidden'); }, 300);
+}
+
+// --- RENDER UTAMA ---
 function renderDashboard(data, isKids) {
     const container = document.getElementById('mainContent');
     if (!container) return;
