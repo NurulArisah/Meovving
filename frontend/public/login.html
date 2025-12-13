@@ -95,7 +95,28 @@
     <a href="signup.html" class="text-[#E63946] hover:underline">Sign Up</a>
   </div>
 
-  <script src="login.js"></script>
-  <script src="Javascript/popup.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+    <script>
+      // HARAP GANTI NILAI DUMMY INI DENGAN CONFIG ASLI DARI FIREBASE CONSOLE ANDA
+      const firebaseConfig = {
+        apiKey: "AIzaSyDrgoYBLcrIqDxx4cHkHBTfdORAMpOL0uo",
+        authDomain: "meovving.firebaseapp.com",
+        projectId: "meovving",
+        storageBucket: "meovving.firebasestorage.app",
+        messagingSenderId: "885415406382",
+        appId: "1:885415406382:web:86f75abbcf7a27b79928bf",
+        measurementId: "G-CBM47QFY39"
+      };
+
+      // Inisialisasi Firebase
+      if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+      }
+    </script>
+
+    <script src="Javascript/login.js"></script>
+    <script src="Javascript/popup.js"></script>
 </body>
 </html>

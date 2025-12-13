@@ -12,6 +12,9 @@ build/
 .env
 .env.local
 
+# Kunci rahasia Firebase Service Account (JANGAN COMMIT!)
+backend/storage/app/meovving-firebase-adminsdk-fbsvc-f985a7c0c9.json
+
 # File khusus sistem / editor
 .DS_Store
 Thumbs.db
